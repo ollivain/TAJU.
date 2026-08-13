@@ -4,6 +4,7 @@ import {
   isThemeId,
   type AppSettings,
 } from "../domain/settings/types";
+import { getLocalStorage } from "./getLocalStorage";
 import type { SettingsRepository } from "./SettingsRepository";
 
 export const SETTINGS_STORAGE_KEY = "taju:settings:v1";
@@ -27,18 +28,32 @@ export const migrateSettings = (value: unknown): AppSettings => {
 };
 
 export class LocalStorageSettingsRepository implements SettingsRepository {
-  constructor(private readonly storage: Storage = window.localStorage) {}
+  private writable = true;
+
+  constructor(private readonly storage: Storage | undefined = getLocalStorage()) {}
 
   load(): AppSettings {
+    if (!this.storage) return createDefaultSettings();
     try {
       const raw = this.storage.getItem(SETTINGS_STORAGE_KEY);
-      return raw ? migrateSettings(JSON.parse(raw) as unknown) : createDefaultSettings();
+      if (!raw) return createDefaultSettings();
+      const parsed = JSON.parse(raw) as unknown;
+      if (
+        isRecord(parsed) &&
+        typeof parsed.schemaVersion === "number" &&
+        parsed.schemaVersion > 1
+      ) {
+        this.writable = false;
+        return createDefaultSettings();
+      }
+      return migrateSettings(parsed);
     } catch {
       return createDefaultSettings();
     }
   }
 
   save(settings: AppSettings): void {
+    if (!this.storage || !this.writable) return;
     try {
       this.storage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(settings));
     } catch {
@@ -47,6 +62,7 @@ export class LocalStorageSettingsRepository implements SettingsRepository {
   }
 
   clear(): void {
+    if (!this.storage || !this.writable) return;
     try {
       this.storage.removeItem(SETTINGS_STORAGE_KEY);
     } catch {

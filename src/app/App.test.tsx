@@ -62,4 +62,15 @@ describe("TAJU app", () => {
       expect(Object.values(repository.state.words).some((state) => state.known)).toBe(true);
     });
   });
+
+  it("säilyttää näppäimistöfokuksen edistymisen nollausvahvistuksessa", async () => {
+    const user = userEvent.setup();
+    renderApp("/asetukset");
+
+    await user.click(await screen.findByRole("button", { name: "Nollaa edistyminen" }));
+    expect(screen.getByRole("button", { name: "Peruuta" })).toHaveFocus();
+
+    await user.click(screen.getByRole("button", { name: "Peruuta" }));
+    expect(screen.getByRole("button", { name: "Nollaa edistyminen" })).toHaveFocus();
+  });
 });

@@ -19,7 +19,6 @@ export default defineConfig({
         start_url: "/sanat",
         scope: "/",
         display: "standalone",
-        orientation: "portrait-primary",
         background_color: "#cadde9",
         theme_color: "#cadde9",
         icons: [

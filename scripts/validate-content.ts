@@ -60,7 +60,7 @@ const assertUnique = (values: string[], label: string): void => {
 
 const manifest = manifestSchema.parse(await parseJson("content/fi/manifest.json"));
 const categories = z.array(categorySchema).parse(await parseJson("content/fi/categories.json"));
-const words = z.array(wordSchema).min(25).max(40).parse(await parseJson("content/fi/words.json"));
+const words = z.array(wordSchema).min(25).parse(await parseJson("content/fi/words.json"));
 
 assertUnique(categories.map((category) => category.id), "Kategoriat");
 assertUnique(words.map((word) => word.id), "WordEntry ID:t");

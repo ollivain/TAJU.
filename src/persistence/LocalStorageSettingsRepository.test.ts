@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createDefaultSettings } from "../domain/settings/types";
 import {
   LocalStorageSettingsRepository,
@@ -41,5 +41,30 @@ describe("LocalStorageSettingsRepository", () => {
     const repository = new LocalStorageSettingsRepository(localStorage);
 
     expect(repository.load()).toEqual(createDefaultSettings());
+  });
+
+  it("ei kaada alustusta kun localStorage-pääsy on estetty", () => {
+    const getter = vi.spyOn(window, "localStorage", "get").mockImplementation(() => {
+      throw new DOMException("Blocked", "SecurityError");
+    });
+
+    try {
+      const repository = new LocalStorageSettingsRepository();
+      expect(repository.load()).toEqual(createDefaultSettings());
+      expect(() => repository.save(createDefaultSettings())).not.toThrow();
+    } finally {
+      getter.mockRestore();
+    }
+  });
+
+  it("ei ylikirjoita uudemman version asetuksia", () => {
+    const future = JSON.stringify({ schemaVersion: 2, theme: "future-theme" });
+    localStorage.setItem(SETTINGS_STORAGE_KEY, future);
+    const repository = new LocalStorageSettingsRepository(localStorage);
+
+    expect(repository.load()).toEqual(createDefaultSettings());
+    repository.save(createDefaultSettings());
+
+    expect(localStorage.getItem(SETTINGS_STORAGE_KEY)).toBe(future);
   });
 });

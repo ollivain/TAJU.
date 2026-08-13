@@ -74,6 +74,17 @@ test("haulla löytyvä sana avautuu", async ({ page }) => {
   await expect(page.getByRole("heading", { level: 1, name: "Paradoksi" })).toBeVisible();
 });
 
+test("hakukentän näppäimistöfokus näkyy", async ({ page }) => {
+  await page.goto("/loyda");
+  await page.keyboard.press("Tab");
+  await page.keyboard.press("Tab");
+
+  const search = page.getByRole("searchbox", { name: "Hae sanoja" });
+  await expect(search).toBeFocused();
+  await expect(search).toHaveCSS("outline-style", "solid");
+  await expect(search).toHaveCSS("outline-width", "2px");
+});
+
 test("asetukset säilyvät ja edistymisen voi nollata", async ({ page }) => {
   await page.goto("/sanat");
   await page.getByRole("button", { name: "Tallenna" }).click();
@@ -95,6 +106,21 @@ test("asetukset säilyvät ja edistymisen voi nollata", async ({ page }) => {
   await page.getByRole("button", { name: "Nollaa edistyminen" }).click();
   await page.getByRole("button", { name: "Nollaa", exact: true }).click();
   await expect(page.getByRole("definition")).toContainText(["0", "0"]);
+});
+
+test("asetusten teemavalintojen kosketusalue säilyy mobiilileveyksillä", async ({ page }) => {
+  await page.goto("/asetukset");
+
+  for (const width of [430, 402, 393, 375, 360, 320]) {
+    await page.setViewportSize({ width, height: 852 });
+    for (const name of ["Puuteri", "Paperi", "Salvia", "Hiekka", "Hiili"]) {
+      const box = await page.getByRole("button", { name }).boundingBox();
+      expect(box, `${name} @ ${width}px`).not.toBeNull();
+      expect(box!.width, `${name} leveys @ ${width}px`).toBeGreaterThanOrEqual(44);
+      expect(box!.height, `${name} korkeus @ ${width}px`).toBeGreaterThanOrEqual(44);
+      expect(box!.x + box!.width, `${name} oikea reuna @ ${width}px`).toBeLessThanOrEqual(width);
+    }
+  }
 });
 
 test("ydinsisältö toimii ensimmäisen latauksen jälkeen offline-tilassa", async ({ page, context }) => {

@@ -1,4 +1,4 @@
-import { Fragment, useState, type CSSProperties } from "react";
+import { Fragment, useEffect, useRef, useState, type CSSProperties } from "react";
 import { useSettings } from "../../app/providers/SettingsContext";
 import { useUserState } from "../../app/providers/UserStateContext";
 import { APP_VERSION } from "../../app/version";
@@ -10,6 +10,19 @@ export function SettingsPage() {
   const { settings, updateSettings } = useSettings();
   const userState = useUserState();
   const [askReset, setAskReset] = useState(false);
+  const resetTriggerRef = useRef<HTMLButtonElement>(null);
+  const resetCancelRef = useRef<HTMLButtonElement>(null);
+  const resetWasOpenRef = useRef(false);
+
+  useEffect(() => {
+    if (askReset) {
+      resetWasOpenRef.current = true;
+      resetCancelRef.current?.focus();
+    } else if (resetWasOpenRef.current) {
+      resetWasOpenRef.current = false;
+      resetTriggerRef.current?.focus();
+    }
+  }, [askReset]);
 
   const wordStates = contentCatalog.words.map((word) => userState.data.words[word.id]);
   const knownCount = wordStates.filter((state) => state?.known).length;
@@ -113,10 +126,21 @@ export function SettingsPage() {
 
           <div className="settings-reset">
             {askReset ? (
-              <div className="settings-reset__confirm">
-                <span className="settings-reset__question">Nollataanko edistyminen?</span>
+              <div
+                className="settings-reset__confirm"
+                role="group"
+                aria-labelledby="reset-confirmation-label"
+              >
+                <span id="reset-confirmation-label" className="settings-reset__question">
+                  Nollataanko edistyminen?
+                </span>
                 <div className="settings-reset__actions">
-                  <button type="button" className="text-button" onClick={() => setAskReset(false)}>
+                  <button
+                    ref={resetCancelRef}
+                    type="button"
+                    className="text-button"
+                    onClick={() => setAskReset(false)}
+                  >
                     Peruuta
                   </button>
                   <button
@@ -132,7 +156,12 @@ export function SettingsPage() {
                 </div>
               </div>
             ) : (
-              <button type="button" className="text-button" onClick={() => setAskReset(true)}>
+              <button
+                ref={resetTriggerRef}
+                type="button"
+                className="text-button"
+                onClick={() => setAskReset(true)}
+              >
                 Nollaa edistyminen
               </button>
             )}

@@ -6,9 +6,11 @@ import { SettingsProvider } from "./app/providers/SettingsProvider";
 import { UserStateProvider } from "./app/providers/UserStateProvider";
 import "./styles/globals.css";
 
+const routerBasename = import.meta.env.BASE_URL.replace(/\/$/, "") || "/";
+
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename={routerBasename}>
       <SettingsProvider>
         <UserStateProvider>
           <App />

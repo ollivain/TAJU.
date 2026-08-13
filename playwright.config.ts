@@ -18,6 +18,10 @@ export default defineConfig({
   webServer: {
     command: "npm run build && npm run preview -- --host 127.0.0.1",
     url: "http://127.0.0.1:4173",
+    env: {
+      // Vite preview serves dist from the domain root rather than mounting base.
+      TAJU_BASE_PATH: "/",
+    },
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,
   },

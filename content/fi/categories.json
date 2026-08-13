@@ -1,0 +1,10 @@
+[
+  { "id": "tyoelama", "label": "Työelämä" },
+  { "id": "psykologia", "label": "Psykologia" },
+  { "id": "filosofia", "label": "Filosofia" },
+  { "id": "tiede", "label": "Tiede" },
+  { "id": "yhteiskunta", "label": "Yhteiskunta" },
+  { "id": "media", "label": "Media" },
+  { "id": "kieli-ja-viestinta", "label": "Kieli ja viestintä" },
+  { "id": "matematiikka", "label": "Matematiikka" }
+]

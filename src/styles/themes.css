@@ -1,0 +1,65 @@
+/*
+ * Curated background themes. Each one swaps the canvas, the ink it is read in and
+ * the single accent used for active states; typography and rhythm never change.
+ * The id in [data-theme] matches ThemeId in src/domain/settings/types.ts.
+ */
+:root,
+:root[data-theme="puuteri"] {
+  --color-canvas: #cadde9;
+  --color-ink: #191d21;
+  --ink-rgb: 34 38 42;
+  --color-accent: #9b5334;
+}
+
+:root[data-theme="paperi"] {
+  --color-canvas: #f2efe8;
+  --color-ink: #1b1a17;
+  --ink-rgb: 32 30 26;
+  --color-accent: #9b5334;
+}
+
+:root[data-theme="salvia"] {
+  --color-canvas: #dde4d9;
+  --color-ink: #191e19;
+  --ink-rgb: 30 36 30;
+  --color-accent: #7c5230;
+}
+
+:root[data-theme="hiekka"] {
+  --color-canvas: #e9ddc9;
+  --color-ink: #221c14;
+  --ink-rgb: 38 32 24;
+  --color-accent: #8f4a2c;
+}
+
+:root[data-theme="hiili"] {
+  --color-canvas: #23262a;
+  --color-ink: #f2efe7;
+  --ink-rgb: 242 239 231;
+  --color-accent: #d99168;
+}
+
+/* Swatch previews in Asetukset read the canvases from here, so the hex values
+   for a theme live in exactly one place. */
+:root {
+  --swatch-puuteri: #cadde9;
+  --swatch-paperi: #f2efe8;
+  --swatch-salvia: #dde4d9;
+  --swatch-hiekka: #e9ddc9;
+  --swatch-hiili: #23262a;
+}
+
+:root[data-text-size="pieni"] {
+  --text-scale: 0.92;
+  --text-hero-scale: 0.96;
+}
+
+:root[data-text-size="normaali"] {
+  --text-scale: 1;
+  --text-hero-scale: 1;
+}
+
+:root[data-text-size="suuri"] {
+  --text-scale: 1.12;
+  --text-hero-scale: 1.04;
+}

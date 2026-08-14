@@ -11,6 +11,25 @@ test("sanan tila säilyy uudelleenlatauksessa", async ({ page }) => {
   await expect(page.getByRole("link", { name: new RegExp(savedWord ?? "", "i") })).toBeVisible();
 });
 
+test("Tiedä-faktan voi tallentaa ja merkitä tunnetuksi", async ({ page }) => {
+  await page.goto("/tieda");
+  const firstFact = await page.getByRole("heading", { level: 1 }).textContent();
+
+  await expect(page.getByRole("link", { name: /avautuu uuteen välilehteen/i })).toBeVisible();
+  await page.getByRole("button", { name: "Tallenna" }).click();
+  await expect(page.getByRole("button", { name: "Tallennettu" })).toHaveAttribute(
+    "aria-pressed",
+    "true",
+  );
+
+  await page.getByRole("button", { name: "Tiesin tämän" }).click();
+  await expect(page.getByRole("heading", { level: 1 })).not.toHaveText(firstFact ?? "");
+
+  const secondFact = await page.getByRole("heading", { level: 1 }).textContent();
+  await page.getByRole("button", { name: "Seuraava" }).click();
+  await expect(page.getByRole("heading", { level: 1 })).not.toHaveText(secondFact ?? "");
+});
+
 test("sanan toimintorivi mahtuu kapeillekin näytöille", async ({ page }) => {
   await page.goto("/sanat");
   const actions = ["Tallenna", "Osaan tämän", "Seuraava"];

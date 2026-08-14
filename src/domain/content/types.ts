@@ -38,21 +38,14 @@ export interface ContentManifest {
   locale: Locale;
 }
 
-export interface FactSource {
-  title: string;
-  url?: string;
-  accessedAt?: string;
-}
-
-/** Future model only. Phase 1 does not ship fact content. */
 export interface FactEntry {
   kind: "fact";
   id: string;
   slug: string;
   locale: Locale;
-  title: string;
-  shortFact: string;
+  fact: string;
   explanation: string;
-  categories: CategoryId[];
-  sources: FactSource[];
+  category: string;
+  sourceLabel: string;
+  sourceUrl: string;
 }

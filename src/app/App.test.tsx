@@ -63,6 +63,32 @@ describe("TAJU app", () => {
     });
   });
 
+  it("näyttää faktan lähteineen ja käsittelee Tiedä-toiminnot", async () => {
+    const user = userEvent.setup();
+    const repository = renderApp("/tieda");
+    const firstFact = await screen.findByRole("heading", { level: 1 });
+    const firstFactText = firstFact.textContent;
+
+    expect(screen.getByRole("link", { name: /avautuu uuteen välilehteen/i })).toHaveAttribute(
+      "target",
+      "_blank",
+    );
+
+    await user.click(screen.getByRole("button", { name: "Tallenna" }));
+    expect(screen.getByRole("button", { name: "Tallennettu" })).toHaveAttribute(
+      "aria-pressed",
+      "true",
+    );
+
+    await user.click(screen.getByRole("button", { name: "Tiesin tämän" }));
+
+    await waitFor(() => {
+      expect(screen.getByRole("heading", { level: 1 }).textContent).not.toBe(firstFactText);
+      expect(Object.values(repository.state.facts).some((state) => state.saved)).toBe(true);
+      expect(Object.values(repository.state.facts).some((state) => state.known)).toBe(true);
+    });
+  });
+
   it("säilyttää näppäimistöfokuksen edistymisen nollausvahvistuksessa", async () => {
     const user = userEvent.setup();
     renderApp("/asetukset");

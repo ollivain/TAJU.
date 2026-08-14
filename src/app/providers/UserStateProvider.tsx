@@ -10,9 +10,13 @@ import { createEmptyUserState, type PersistedUserState } from "../../domain/user
 import { LocalStorageUserWordStateRepository } from "../../persistence/LocalStorageUserWordStateRepository";
 import type { UserWordStateRepository } from "../../persistence/UserWordStateRepository";
 import {
+  advanceFactFeed,
   advanceFeed,
+  setCurrentFact,
   setCurrentWord,
+  setFactKnown,
   setKnown,
+  toggleFactSaved,
   toggleSaved,
 } from "../../services/UserStateService";
 import { UserStateContext, type UserStateContextValue } from "./UserStateContext";
@@ -109,6 +113,26 @@ export function UserStateProvider({ children, repository }: UserStateProviderPro
           const now = new Date().toISOString();
           const withKnown = markKnown ? setKnown(current, currentWordId, true, now) : current;
           return advanceFeed(withKnown, currentWordId, nextWordId, now);
+        }),
+      toggleFactSaved: (factId) =>
+        commit((current) => toggleFactSaved(current, factId, new Date().toISOString())),
+      toggleFactKnown: (factId, known) =>
+        commit((current) =>
+          setFactKnown(
+            current,
+            factId,
+            known ?? !current.facts[factId]?.known,
+            new Date().toISOString(),
+          ),
+        ),
+      setCurrentFact: (factId) => commit((current) => setCurrentFact(current, factId)),
+      advanceFact: (currentFactId, nextFactId, markKnown = false) =>
+        commit((current) => {
+          const now = new Date().toISOString();
+          const withKnown = markKnown
+            ? setFactKnown(current, currentFactId, true, now)
+            : current;
+          return advanceFactFeed(withKnown, currentFactId, nextFactId, now);
         }),
       resetProgress: () => commit(() => createEmptyUserState()),
       dismissStorageError: () => dispatch({ type: "dismiss-error" }),

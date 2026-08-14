@@ -12,7 +12,12 @@ export default defineConfig(({ command }) => {
       VitePWA({
         registerType: "prompt",
         injectRegister: null,
-        includeAssets: ["icons/taju-192.png", "icons/taju-512.png"],
+        includeAssets: [
+          "icons/taju-192.png",
+          "icons/taju-512.png",
+          "icons/apple-touch-icon.png",
+          "icons/favicon-32.png",
+        ],
         manifest: {
           id: base,
           name: "TAJU – sana kerrallaan",
@@ -30,13 +35,13 @@ export default defineConfig(({ command }) => {
               src: `${base}icons/taju-192.png`,
               sizes: "192x192",
               type: "image/png",
-              purpose: "any maskable",
+              purpose: "any",
             },
             {
               src: `${base}icons/taju-512.png`,
               sizes: "512x512",
               type: "image/png",
-              purpose: "any maskable",
+              purpose: "any",
             },
           ],
         },

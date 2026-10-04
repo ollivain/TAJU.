@@ -15,10 +15,10 @@ import { useVoiceInput } from "./useVoiceInput";
 const voiceMessages: Record<VoiceStatus, string> = {
   idle: "Sano käsite tai kysy kokonaisella lauseella.",
   starting: "Odotetaan mikrofonia. Salli käyttö selaimen lupapyynnössä.",
-  listening: "Kuunnellaan… Sano käsite tai kysymys.",
+  listening: "Kuunnellaan… Sano kysymys ja paina lopuksi Lopeta ja hae.",
   processing: "Kuuntelu päättyi. Tunnistetaan puhetta…",
   result: "Puhe tunnistettu. Tarkista hakutulos alta.",
-  "no-match": "Puhetta ei tunnistettu. Kokeile uudelleen tai kirjoita haku.",
+  "no-match": "Puhetta ei tunnistettu. Kokeile uudelleen tai sanele haku näppäimistön mikrofonilla.",
   "permission-denied": "Mikrofonin käyttö estettiin. Voit sallia sen selaimen sivustoasetuksista tai kirjoittaa haun.",
   unavailable: "Puhehaku ei ole käytettävissä. Tarkista selain ja mikrofoni tai kirjoita haku.",
   error: "Puheentunnistus ei onnistunut. Kokeile uudelleen tai kirjoita haku.",
@@ -44,7 +44,7 @@ export function ConceptsPage() {
   const parsed = useMemo(() => parseConceptQuery(query), [query]);
   const matches = useMemo(() => parsed.kind === "lookup" ? searchConcepts(conceptSearchIndex, parsed.term) : [], [parsed]);
   const pairMatches = useMemo(() => parsed.kind === "compare" ? parsed.terms.map((term) => searchConcepts(conceptSearchIndex, term)) : [], [parsed]);
-  const lowConfidence = voice.status === "result" && (voice.confidence ?? 0) > 0 && voice.confidence! < 0.6;
+  const lowConfidence = voice.status === "result" && (voice.isFinal === false || ((voice.confidence ?? 0) > 0 && voice.confidence! < 0.6));
   const pairIsCertain = pairMatches.length === 2 && pairMatches.every((matches) => ["exact", "inflected"].includes(matches[0]?.kind) && matches[0]?.score !== matches[1]?.score) && !lowConfidence;
   const manualPair = compare.map((id) => contentCatalog.conceptsById.get(id));
   const pair = manualPair.every(Boolean) ? manualPair : pairIsCertain ? pairMatches.map((matches) => matches[0].concept) : [];
@@ -78,7 +78,7 @@ export function ConceptsPage() {
               <SearchIcon />
               <label htmlFor="concept-search" className="sr-only">Hae käsitteitä</label>
               <input id="concept-search" type="search" inputMode="search" autoComplete="off" placeholder="Hae käsite tai kysy…" value={query} maxLength={300} onChange={(event) => { voice.cancel(); changeQuery(event.target.value); }} />
-              <button type="button" className="concept-mic" aria-label={busy ? "Peruuta puhehaku" : "Hae puhumalla"} aria-describedby="concept-voice-status" data-listening={voice.status === "listening"} onClick={() => busy ? voice.cancel() : voice.start(({ transcript }) => {
+              <button type="button" className="concept-mic" aria-label={voice.status === "listening" ? "Lopeta kuuntelu ja hae" : voice.status === "starting" ? "Peruuta puhehaun käynnistys" : voice.status === "processing" ? "Käsitellään puhetta" : "Hae puhumalla"} disabled={voice.status === "processing"} aria-describedby="concept-voice-status" data-listening={voice.status === "listening"} onClick={() => voice.status === "listening" ? voice.stop() : voice.status === "starting" ? voice.cancel() : voice.start(({ transcript }) => {
                 setQuery(transcript);
                 setParams({ q: transcript }, { replace: true });
                 setPageLimit(30);
@@ -89,9 +89,12 @@ export function ConceptsPage() {
             </div>
             <div className="concept-voice-feedback">
               <p id="concept-voice-status" role="status" aria-live="polite">{voice.message ?? (voice.status === "result" && searchResults.length === 0 ? "Puhe tunnistettu, mutta käsitettä ei löytynyt. Muokkaa hakua tai kokeile uudelleen." : voiceMessages[voice.status])}</p>
-              {voice.transcript && <p className="concept-transcript">Kuultu: <q>{voice.transcript}</q></p>}
-              {busy && <button type="button" className="text-button" onClick={voice.cancel}>Peruuta kuuntelu</button>}
-              <details className="concept-voice-info"><summary>Tietoa puhehausta</summary><p>Selaimesi voi lähettää äänen puhepalveluunsa tunnistettavaksi. Puhehaku voi tarvita verkkoyhteyden. TAJU ei tallenna ääntä. Voit aina kirjoittaa haun.</p></details>
+              {voice.transcript && <p className="concept-transcript">{voice.isFinal === false ? "Kuultu (alustava): " : "Kuultu: "}<q>{voice.transcript}</q></p>}
+              {busy && <div className="concept-voice-actions">
+                {voice.status === "listening" && <button type="button" className="text-button text-button--accent" onClick={voice.stop}>Lopeta ja hae</button>}
+                <button type="button" className="text-button" onClick={voice.cancel}>Peruuta puhehaku</button>
+              </div>}
+              <details className="concept-voice-info"><summary>Tietoa puhehausta</summary><p>Selaimesi voi lähettää äänen puhepalveluunsa tunnistettavaksi. Puhehaku voi tarvita verkkoyhteyden. TAJU ei tallenna ääntä. iPhonen Safari voi tarvita myös Sirin ja puheentunnistuksen sallimisen. Voit myös sanella hakukenttään iPhonen näppäimistön mikrofonilla.</p></details>
             </div>
           </form>
           <div className="concept-filter">

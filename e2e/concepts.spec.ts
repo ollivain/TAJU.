@@ -10,28 +10,72 @@ async function installVoice(page: Page) {
     Object.defineProperty(navigator, "permissions", { value: { query: async () => ({ state: "prompt" }) } });
     host.SpeechRecognition = class {
       lang = ""; continuous = false; interimResults = false; maxAlternatives = 1;
-      onaudiostart?: () => void; onaudioend?: () => void; onend?: () => void;
+      onaudiostart?: () => void; onaudioend?: () => void; onspeechend?: () => void; onend?: () => void;
       onerror?: (event: { error: string }) => void;
       onresult?: (event: unknown) => void;
       start() { host.testRecognition = this; }
-      stop() { this.onaudioend?.(); }
+      stop() { host.testStopped = true; this.onaudioend?.(); }
       abort() { host.testAborted = true; }
     };
   });
 }
-async function emitVoice(page: Page, event: "audio" | "end-audio" | "result" | "error", transcript = "", confidence = 0.9) {
-  await page.evaluate(({ event, transcript, confidence }) => {
+async function emitVoice(page: Page, event: "audio" | "end-audio" | "end" | "result" | "error", transcript = "", confidence = 0.9, isFinal = true) {
+  await page.evaluate(({ event, transcript, confidence, isFinal }) => {
     const engine = (window as unknown as { testRecognition: {
-      onaudiostart?: () => void; onaudioend?: () => void;
+      onaudiostart?: () => void; onaudioend?: () => void; onend?: () => void;
       onerror?: (event: { error: string }) => void;
       onresult?: (event: unknown) => void;
     } }).testRecognition;
     if (event === "audio") engine.onaudiostart?.();
     if (event === "end-audio") engine.onaudioend?.();
+    if (event === "end") engine.onend?.();
     if (event === "error") engine.onerror?.({ error: transcript });
-    if (event === "result") engine.onresult?.({ resultIndex: 0, results: [{ isFinal: true, 0: { transcript, confidence } }] });
-  }, { event, transcript, confidence });
+    if (event === "result") engine.onresult?.({ resultIndex: 0, results: [{ isFinal, 0: { transcript, confidence } }] });
+  }, { event, transcript, confidence, isFinal });
 }
+
+test("stopping the microphone preserves speech and runs the search", async ({ page }) => {
+  await installVoice(page);
+  await page.goto("/kasitteet");
+  await page.getByRole("button", { name: "Hae puhumalla" }).click();
+  await emitVoice(page, "audio");
+  await emitVoice(page, "result", "Mikä on Ponzi", 0, false);
+  await expect(page.locator(".concept-transcript")).toContainText("Kuultu (alustava): Mikä on Ponzi");
+  await page.getByRole("button", { name: "Lopeta kuuntelu ja hae", exact: true }).click();
+  expect(await page.evaluate(() => (window as unknown as { testStopped: boolean }).testStopped)).toBe(true);
+  expect(await page.evaluate(() => (window as unknown as { testAborted?: boolean }).testAborted)).not.toBe(true);
+  await expect(page.locator(".concept-mic")).toHaveAttribute("data-listening", "false");
+  await expect(page.locator(".concept-transcript")).toContainText("Mikä on Ponzi");
+  await emitVoice(page, "result", "Mikä on Ponzi-huijaus?");
+  await expect(page.getByRole("searchbox")).toHaveValue("Mikä on Ponzi-huijaus?");
+  await expect(page.locator(".concept-row")).toContainText("Ponzi-huijaus");
+});
+
+test("Safari interim-only result is searchable and clearly marked for review", async ({ page }) => {
+  await installVoice(page);
+  await page.goto("/kasitteet");
+  await page.getByRole("button", { name: "Hae puhumalla" }).click();
+  await emitVoice(page, "audio");
+  await emitVoice(page, "result", "Selitä oikofobia", 0, false);
+  await page.getByRole("button", { name: "Lopeta ja hae", exact: true }).click();
+  await emitVoice(page, "end");
+  await expect(page.getByRole("searchbox")).toHaveValue("Selitä oikofobia");
+  await expect(page.locator("#concept-voice-status")).toContainText("Tunnistus jäi alustavaksi");
+  await expect(page.getByText("Tarkoititko: Oikofobia?", { exact: false })).toBeVisible();
+  await expect(page.locator(".concept-row")).toContainText("Oikofobia");
+});
+
+test("explicit cancellation discards speech without changing the existing query", async ({ page }) => {
+  await installVoice(page);
+  await page.goto("/kasitteet?q=Ponzi");
+  await page.getByRole("button", { name: "Hae puhumalla" }).click();
+  await emitVoice(page, "audio");
+  await emitVoice(page, "result", "oikofobia", 0, false);
+  await page.getByRole("button", { name: "Peruuta puhehaku", exact: true }).click();
+  await expect(page.getByRole("searchbox")).toHaveValue("Ponzi");
+  await expect(page.locator(".concept-transcript")).toHaveCount(0);
+  expect(await page.evaluate(() => (window as unknown as { testAborted: boolean }).testAborted)).toBe(true);
+});
 
 test("Finnish and English lookup, details, related links and restored query", async ({ page }) => {
   await page.goto("/sanat");

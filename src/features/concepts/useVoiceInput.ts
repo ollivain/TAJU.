@@ -9,5 +9,5 @@ export function useVoiceInput() {
     document.addEventListener("visibilitychange", hidden);
     return () => { document.removeEventListener("visibilitychange", hidden); voice.dispose(); };
   }, [voice]);
-  return { ...snapshot, start: voice.start, cancel: voice.cancel };
+  return { ...snapshot, start: voice.start, stop: voice.stop, cancel: voice.cancel };
 }

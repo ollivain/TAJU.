@@ -9,6 +9,8 @@
 .concept-search > svg { flex: none; }
 .concept-mic { display: grid; flex: none; place-items: center; width: var(--tap-target); height: var(--tap-target); cursor: pointer; color: var(--color-ink); }
 .concept-mic[data-listening="true"] { color: var(--color-accent); border: 1px solid currentColor; border-radius: 50%; }
+.concept-mic:disabled { cursor: default; color: var(--color-ink-70); }
+.concept-voice-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-5); }
 .concept-voice-feedback { margin-top: var(--space-3); color: var(--color-ink-70); font-size: var(--text-caption); line-height: 1.5; }
 .concept-transcript { margin-top: var(--space-2); color: var(--color-ink); overflow-wrap: anywhere; }
 .concept-voice-info summary { display: list-item; width: fit-content; min-height: 44px; padding: 12px 0; cursor: pointer; }

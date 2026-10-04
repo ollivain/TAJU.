@@ -1,10 +1,11 @@
 export type VoiceStatus = "idle" | "starting" | "listening" | "processing" | "result" | "no-match" | "permission-denied" | "unavailable" | "error";
-export interface VoiceSnapshot { status: VoiceStatus; transcript: string; confidence?: number; message?: string }
-export interface VoiceResult { transcript: string; confidence?: number }
+export interface VoiceSnapshot { status: VoiceStatus; transcript: string; confidence?: number; isFinal?: boolean; message?: string }
+export interface VoiceResult { transcript: string; confidence?: number; isFinal: boolean }
 export interface VoiceInput {
   subscribe(listener: () => void): () => void;
   getSnapshot(): VoiceSnapshot;
   start(onResult: (result: VoiceResult) => void): void;
+  stop(): void;
   cancel(): void;
   dispose(): void;
 }
@@ -17,6 +18,7 @@ export interface RecognitionEngine {
   maxAlternatives: number;
   onaudiostart: (() => void) | null;
   onaudioend: (() => void) | null;
+  onspeechend: (() => void) | null;
   onend: (() => void) | null;
   onerror: ((event: { error: string }) => void) | null;
   onnomatch: (() => void) | null;
@@ -47,6 +49,10 @@ export class BrowserVoiceInput implements VoiceInput {
   private listeners = new Set<() => void>();
   private engine?: RecognitionEngine;
   private timer?: ReturnType<typeof setTimeout>;
+  private latestResult?: VoiceResult;
+  private onResult?: (result: VoiceResult) => void;
+  private stopping = false;
+  private session = 0;
 
   constructor(
     private factory = nativeRecognitionFactory(),
@@ -62,16 +68,51 @@ export class BrowserVoiceInput implements VoiceInput {
     clearTimeout(this.timer);
     const engine = this.engine;
     this.engine = undefined;
+    this.latestResult = undefined;
+    this.onResult = undefined;
+    this.stopping = false;
+    this.session++;
     if (engine) {
-      engine.onaudiostart = engine.onaudioend = engine.onend = engine.onnomatch = engine.onerror = engine.onresult = null;
+      engine.onaudiostart = engine.onaudioend = engine.onspeechend = engine.onend = engine.onnomatch = engine.onerror = engine.onresult = null;
       try { engine.abort(); } catch { /* Already ended. */ }
     }
   }
   private finish(snapshot: VoiceSnapshot) { this.release(); this.publish(snapshot); }
+  private deliverLatest() {
+    const result = this.latestResult;
+    const callback = this.onResult;
+    if (!result?.transcript) {
+      this.finish({ status: "no-match", transcript: "" });
+      return;
+    }
+    this.finish({
+      status: "result",
+      ...result,
+      message: result.isFinal ? undefined : "Tunnistus jäi alustavaksi. Tarkista kuultu teksti ja valitse oikea käsite.",
+    });
+    callback?.(result);
+  }
   private deadline(milliseconds: number, message: string) {
     clearTimeout(this.timer);
-    this.timer = setTimeout(() => this.finish({ status: "error", transcript: "", message }), milliseconds);
+    this.timer = setTimeout(() => {
+      if (this.latestResult?.transcript) this.deliverLatest();
+      else this.finish({ status: "error", transcript: "", message });
+    }, milliseconds);
   }
+
+  // stop() asks for a result. abort() is reserved for explicit cancellation and
+  // cleanup: using it for the microphone's stop button loses Safari's result.
+  stop = () => {
+    const engine = this.engine;
+    if (!engine || this.stopping) return;
+    this.stopping = true;
+    this.publish({ ...this.snapshot, status: "processing" });
+    this.deadline(10_000, "Puheentunnistus ei palauttanut tekstiä. Kokeile uudelleen tai sanele haku näppäimistön mikrofonilla.");
+    try { engine.stop(); } catch {
+      if (this.latestResult?.transcript) this.deliverLatest();
+      else this.finish({ status: "error", transcript: "", message: "Kuuntelua ei voitu viimeistellä. Kokeile uudelleen tai kirjoita haku." });
+    }
+  };
 
   start = (onResult: (result: VoiceResult) => void) => {
     this.release();
@@ -80,32 +121,40 @@ export class BrowserVoiceInput implements VoiceInput {
     try {
       const engine = this.factory();
       this.engine = engine;
+      this.onResult = onResult;
+      const session = this.session;
       engine.lang = "fi-FI";
       engine.continuous = false;
-      engine.interimResults = false;
+      engine.interimResults = true;
       engine.maxAlternatives = 1;
-      const active = () => this.engine === engine;
+      const active = () => this.engine === engine && this.session === session;
       engine.onaudiostart = () => {
-        if (!active()) return;
-        this.publish({ status: "listening", transcript: "" });
-        this.deadline(30_000, "Kuuntelu päättyi aikarajaan. Kokeile lyhyempää kysymystä tai kirjoita haku.");
+        if (!active() || this.stopping) return;
+        this.publish({ ...this.snapshot, status: "listening" });
+        clearTimeout(this.timer);
+        this.timer = setTimeout(this.stop, 30_000);
       };
       engine.onaudioend = () => {
         if (!active()) return;
-        this.publish({ status: "processing", transcript: "" });
-        this.deadline(10_000, "Puheentunnistus ei vastannut. Kokeile uudelleen tai kirjoita haku.");
+        this.publish({ ...this.snapshot, status: "processing" });
+        if (!this.stopping) this.deadline(10_000, "Puheentunnistus ei palauttanut tekstiä. Kokeile uudelleen tai sanele haku näppäimistön mikrofonilla.");
       };
+      engine.onspeechend = () => { if (active()) this.stop(); };
       engine.onresult = (event) => {
         if (!active()) return;
-        const result = event.results[event.resultIndex];
-        if (!result?.isFinal) return;
-        const transcript = result[0].transcript.trim();
-        if (!transcript) { this.finish({ status: "no-match", transcript: "" }); return; }
-        const confidence = result[0].confidence;
-        this.finish({ status: "result", transcript, confidence });
-        onResult({ transcript, confidence });
+        // The result list is a snapshot, not a stream of new words. Rebuild it
+        // so interim corrections and multi-part questions do not lose segments.
+        const results = Array.from(event.results);
+        const transcript = results.map((result) => result[0]?.transcript.trim() ?? "").filter(Boolean).join(" ");
+        const confidences = results.map((result) => result[0]?.confidence).filter((value) => Number.isFinite(value));
+        const confidence = confidences.length ? Math.min(...confidences) : undefined;
+        const isFinal = results.length > 0 && results.every((result) => result.isFinal);
+        this.latestResult = transcript ? { transcript, confidence, isFinal } : undefined;
+        this.publish({ ...this.snapshot, transcript, confidence, isFinal });
+        if (isFinal) this.deliverLatest();
       };
-      engine.onnomatch = engine.onend = () => { if (active()) this.finish({ status: "no-match", transcript: "" }); };
+      engine.onend = () => { if (active()) this.deliverLatest(); };
+      engine.onnomatch = () => { if (active()) this.finish({ status: "no-match", transcript: "" }); };
       engine.onerror = ({ error }) => {
         if (!active()) return;
         const status = error === "not-allowed" || error === "service-not-allowed" ? "permission-denied"
@@ -117,7 +166,7 @@ export class BrowserVoiceInput implements VoiceInput {
       // Start within the user gesture. Check an already denied permission in
       // parallel: some native engines never emit an error for that condition.
       void this.readPermission().then((permission) => {
-        if (active() && permission === "denied") {
+        if (active() && this.snapshot.status === "starting" && !this.latestResult && permission === "denied") {
           this.finish({ status: "permission-denied", transcript: "" });
         }
       }, () => { /* Recognition events and the timeout remain the fallback. */ });

@@ -65,7 +65,7 @@
   --tap-target: 46px;
 
   /* The design's screen padding, kept clear of the iPhone status bar and home indicator. */
-  --screen-top: max(60px, env(safe-area-inset-top, 0px));
+  --header-height: calc(max(6px, env(safe-area-inset-top, 0px)) + var(--tap-target) + 8px);
   --screen-bottom: 30px;
   --nav-bottom: max(30px, env(safe-area-inset-bottom, 0px));
 }

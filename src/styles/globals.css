@@ -161,6 +161,38 @@ p {
   flex-direction: column;
 }
 
+.app-header {
+  display: flex;
+  width: min(100%, var(--content-width));
+  height: var(--header-height);
+  flex: none;
+  align-items: flex-end;
+  justify-content: flex-end;
+  margin: 0 auto;
+  padding: 0 var(--page-gutter) 8px;
+}
+
+.settings-link {
+  display: grid;
+  width: var(--tap-target);
+  height: var(--tap-target);
+  place-items: center;
+  /* Align the glyph with the right end of the content rule. */
+  margin-right: calc((24px - var(--tap-target)) / 2);
+  border-radius: 50%;
+  color: var(--color-ink-72);
+  text-decoration: none;
+  transition: color 160ms var(--ease-out), transform 160ms var(--ease-out);
+}
+
+.settings-link.is-active {
+  color: var(--color-accent);
+}
+
+.settings-link:active {
+  transform: scale(0.97);
+}
+
 /* Every tab owns its own scroll region so the word actions and the navigation
    sit below the content instead of covering it. */
 .screen {
@@ -181,7 +213,7 @@ p {
 .screen__inner {
   width: min(100%, var(--content-width));
   margin: 0 auto;
-  padding: var(--screen-top) var(--page-gutter) var(--screen-bottom);
+  padding: 0 var(--page-gutter) var(--screen-bottom);
 }
 
 .screen__inner--find {
@@ -899,7 +931,7 @@ p {
 .notice {
   position: fixed;
   z-index: 40;
-  top: calc(var(--space-3) + env(safe-area-inset-top, 0px));
+  top: calc(var(--header-height) + var(--space-3));
   right: var(--space-3);
   left: var(--space-3);
   display: flex;
@@ -940,6 +972,7 @@ p {
   .word-row:hover .word-row__word,
   .fact-source a:hover,
   .bottom-nav__item:not(.is-active):hover,
+  .settings-link:hover,
   .text-button:hover,
   .size-option:hover {
     color: var(--color-accent);

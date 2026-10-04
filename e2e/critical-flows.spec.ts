@@ -97,6 +97,8 @@ test("hakukentän näppäimistöfokus näkyy", async ({ page }) => {
   await page.goto("/loyda");
   await page.keyboard.press("Tab");
   await page.keyboard.press("Tab");
+  await expect(page.getByRole("link", { name: "Asetukset" })).toBeFocused();
+  await page.keyboard.press("Tab");
 
   const search = page.getByRole("searchbox", { name: "Hae sanoja" });
   await expect(search).toBeFocused();

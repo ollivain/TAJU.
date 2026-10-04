@@ -285,6 +285,8 @@ test("keyboard-only lookup and disclosure navigation", async ({ page }) => {
   await page.goto("/kasitteet");
   await page.keyboard.press("Tab");
   await page.keyboard.press("Tab");
+  await expect(page.getByRole("link", { name: "Asetukset" })).toBeFocused();
+  await page.keyboard.press("Tab");
   await expect(page.getByRole("searchbox")).toBeFocused();
   await expect(page.getByRole("searchbox")).toHaveCSS("outline-width", "2px");
   await page.keyboard.type("Overton window");

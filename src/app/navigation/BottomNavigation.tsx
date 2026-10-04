@@ -6,7 +6,6 @@ const items = [
   { to: "/loyda", label: "Löydä" },
   { to: "/tieda", label: "Tiedä" },
   { to: "/kasitteet", label: "Käsitteet" },
-  { to: "/asetukset", label: "Asetukset" },
 ];
 
 export function BottomNavigation() {

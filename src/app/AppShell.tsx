@@ -1,4 +1,5 @@
-import { Outlet } from "react-router-dom";
+import { Settings } from "lucide-react";
+import { NavLink, Outlet } from "react-router-dom";
 import { RoughEdgeDefs } from "../components/ui/RoughEdgeDefs";
 import { PwaStatus } from "../pwa/PwaStatus";
 import { BottomNavigation } from "./navigation/BottomNavigation";
@@ -13,6 +14,16 @@ export function AppShell() {
         Siirry sisältöön
       </a>
       <RoughEdgeDefs />
+      <header className="app-header">
+        <NavLink
+          to="/asetukset"
+          className={({ isActive }) => `settings-link${isActive ? " is-active" : ""}`}
+          aria-label="Asetukset"
+          title="Asetukset"
+        >
+          <Settings size={24} strokeWidth={1.5} aria-hidden="true" focusable="false" />
+        </NavLink>
+      </header>
       <main id="main-content" className="app-main">
         <Outlet />
       </main>

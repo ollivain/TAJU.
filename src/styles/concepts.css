@@ -31,6 +31,17 @@
 .concept-row > svg { flex: none; width: 22px; color: var(--color-ink); }
 .concept-row .concept-meta { margin-top: 3px; }
 .concept-suggestion { padding: 12px 0; color: var(--color-ink); font-size: var(--text-sm); line-height: 1.5; }
+.concept-online { margin-top: var(--space-7); padding-top: var(--space-5); border-top: 1px solid var(--color-ink-22); overflow-wrap: anywhere; }
+.concept-online__status { margin: var(--space-3) 0; color: var(--color-ink-78); font-size: var(--text-sm); line-height: 1.55; }
+.concept-online__result { padding: var(--space-5) 0; border-bottom: 1px solid var(--color-ink-16); }
+.concept-online__result h3 { margin: 4px 0 var(--space-2); font-family: var(--font-display); font-size: calc(var(--text-row) * var(--text-scale)); }
+.concept-online__result h3 a { display: inline-flex; align-items: center; gap: var(--space-2); min-height: var(--tap-target); text-underline-offset: 4px; }
+.concept-online__result a svg, .concept-online__actions svg { flex: none; }
+.concept-online__result > p:not(.concept-meta) { color: var(--color-ink-88); font-size: var(--text-body); line-height: 1.65; }
+.concept-online__actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-4); margin-top: var(--space-3); }
+.concept-online__actions a { display: inline-flex; align-items: center; gap: var(--space-2); }
+.concept-online__credit { margin-top: var(--space-3); color: var(--color-ink-70); font-size: var(--text-caption); line-height: 1.6; }
+.concept-online__credit a { display: inline-block; min-height: var(--tap-target); padding: 12px 0; text-underline-offset: 3px; }
 .concept-detail .back-link { min-height: var(--tap-target); }
 .concept-detail .concept-title { margin-top: 18px; }
 .concept-english { color: var(--color-ink-70); font-size: var(--text-meta); margin-bottom: var(--space-5); }

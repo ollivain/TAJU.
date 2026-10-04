@@ -10,6 +10,7 @@ import type { VoiceStatus } from "../../services/speech/VoiceInput";
 import { conceptSearchIndex, sortedConcepts } from "./catalog";
 import { ConceptComparison } from "./ConceptComparison";
 import { ConceptRow } from "./ConceptRow";
+import { OnlineConceptFallback } from "./OnlineConceptFallback";
 import { useVoiceInput } from "./useVoiceInput";
 
 const voiceMessages: Record<VoiceStatus, string> = {
@@ -52,6 +53,10 @@ export function ConceptsPage() {
   const searchResults = isComparison ? [...new Map(pairMatches.flat().map((match) => [match.concept.id, match])).values()] : matches;
   const filtered = (query.trim() ? searchResults.map((match) => match.concept) : sortedConcepts).filter((concept) => !category || concept.category === category);
   const needsSuggestion = query.trim() && !isComparison && (lowConfidence || searchResults[0]?.kind === "fuzzy");
+  // A category hiding an existing local hit is not a missing concept.
+  const missingTerms = [...new Set(parsed.kind === "compare"
+    ? parsed.terms.filter((_, position) => pairMatches[position]?.length === 0)
+    : matches.length === 0 ? [parsed.term] : [])].filter((term) => term.length >= 3);
 
   function changeQuery(value: string) {
     setQuery(value);
@@ -88,7 +93,7 @@ export function ConceptsPage() {
               </button>
             </div>
             <div className="concept-voice-feedback">
-              <p id="concept-voice-status" role="status" aria-live="polite">{voice.message ?? (voice.status === "result" && searchResults.length === 0 ? "Puhe tunnistettu, mutta käsitettä ei löytynyt. Muokkaa hakua tai kokeile uudelleen." : voiceMessages[voice.status])}</p>
+              <p id="concept-voice-status" role="status" aria-live="polite">{voice.message ?? (voice.status === "result" && searchResults.length === 0 ? "Puhe tunnistettu, mutta käsitettä ei löytynyt TAJUn aineistosta. Voit jatkaa verkkotuloksiin alla." : voiceMessages[voice.status])}</p>
               {voice.transcript && <p className="concept-transcript">{voice.isFinal === false ? "Kuultu (alustava): " : "Kuultu: "}<q>{voice.transcript}</q></p>}
               {busy && <div className="concept-voice-actions">
                 {voice.status === "listening" && <button type="button" className="text-button text-button--accent" onClick={voice.stop}>Lopeta ja hae</button>}
@@ -116,10 +121,11 @@ export function ConceptsPage() {
             </div>
           </details>
           {pair.length === 2 && pair[0] && pair[1] && pair[0].id !== pair[1].id ? <ConceptComparison concepts={[pair[0], pair[1]]} /> : isComparison ? <p className="empty-note">{pair.length === 2 ? "Valitse kaksi eri käsitettä." : "Tarkista vertailun käsitteet. Valitse molemmat yllä, jos haku jäi epävarmaksi."}</p> : null}
-          <div className="section-rule concept-result-rule"><Squiggle weight={1.1} opacity={0.45} /><span role="status">{filtered.length} käsitettä</span><Squiggle weight={1.1} opacity={0.45} /></div>
+          <div className="section-rule concept-result-rule"><Squiggle weight={1.1} opacity={0.45} /><span role="status">{filtered.length} käsitettä{missingTerms.length > 0 ? " TAJUssa" : ""}</span><Squiggle weight={1.1} opacity={0.45} /></div>
           {needsSuggestion && filtered.length > 0 ? <p className="concept-suggestion">Tarkoititko: {filtered[0].name}? Valitse oikea käsite tuloksista.</p> : null}
           <div aria-label="Käsitteet">{filtered.slice(0, pageLimit).map((concept) => <ConceptRow key={concept.id} concept={concept} returnSearch={`?${params.toString()}`} />)}</div>
-          {filtered.length === 0 && <div className="empty-note"><p>Ei hakutuloksia. Kokeile lyhyempää hakua, suomen- tai englanninkielistä nimeä tai toista aihetta.</p><button type="button" className="text-button text-button--accent" onClick={() => { voice.cancel(); setQuery(""); setParams({}); setCompare(["", ""]); }}>Näytä kaikki käsitteet</button></div>}
+          {filtered.length === 0 && <div className="empty-note"><p>{missingTerms.length > 0 ? "Ei hakutuloksia TAJUn aineistosta. Voit jatkaa verkkotuloksiin alla." : "Ei hakutuloksia. Kokeile lyhyempää hakua, suomen- tai englanninkielistä nimeä tai toista aihetta."}</p><button type="button" className="text-button text-button--accent" onClick={() => { voice.cancel(); setQuery(""); setParams({}); setCompare(["", ""]); }}>Näytä kaikki käsitteet</button></div>}
+          {!busy && missingTerms.map((term) => <OnlineConceptFallback key={term} term={term} />)}
           {filtered.length > pageLimit && <button type="button" className="text-button text-button--accent" onClick={() => setPageLimit((limit) => limit + 30)}>Näytä lisää ({filtered.length - pageLimit})</button>}
         </div>
       </div>

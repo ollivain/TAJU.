@@ -1,6 +1,11 @@
 import { expect, test, type Page } from "@playwright/test";
 import concepts from "../content/fi/concepts.json" with { type: "json" };
 
+// Keep existing flows deterministic; online lookup is covered separately.
+test.beforeEach(async ({ page }) => {
+  await page.route("https://*.wikipedia.org/w/api.php?*", (route) => route.fulfill({ json: { batchcomplete: true } }));
+});
+
 // Only tests install this controllable native boundary. Production always uses
 // the browser's real API, and never substitutes simulated recognition.
 async function installVoice(page: Page) {
@@ -189,6 +194,25 @@ test("voice comparison resets category and no concept is explained on no-match",
   await emitVoice(page, "result", "kvanttikirahvi");
   await expect(page.locator("#concept-voice-status")).toContainText("käsitettä ei löytynyt");
   await expect(page.locator(".concept-row")).toHaveCount(0);
+});
+
+test("a spoken missing concept uses online search after recognition finishes", async ({ page }) => {
+  await installVoice(page);
+  const requests: string[] = [];
+  await page.route("https://*.wikipedia.org/w/api.php?*", async (route) => {
+    requests.push(route.request().url());
+    await route.fulfill({ json: { query: { pages: [{ pageid: 13855, title: "Emergenssi", index: 1, extract: "Kokonaisuudesta syntyvä uusi ominaisuus." }] } } });
+  });
+  await page.goto("/kasitteet");
+  await page.getByRole("button", { name: "Hae puhumalla" }).click();
+  await emitVoice(page, "audio");
+  await emitVoice(page, "result", "Mikä on emergenssi", 0, false);
+  await expect(page.locator(".concept-online")).toHaveCount(0);
+  expect(requests).toHaveLength(0);
+  await page.getByRole("button", { name: "Lopeta ja hae", exact: true }).click();
+  await emitVoice(page, "result", "Mikä on emergenssi?");
+  await expect(page.getByRole("region", { name: "Verkosta: emergenssi" })).toContainText("Kokonaisuudesta syntyvä uusi ominaisuus.");
+  expect(requests).toHaveLength(1);
 });
 
 test("permission denial, missing hardware, no speech, network error and cancel recover", async ({ page }) => {

@@ -68,6 +68,7 @@ Vertailuun voi valita minkä tahansa kaksi käsitettä tai kirjoittaa `Mikä ero
 | `src/features/concepts/catalog.ts` | Kerran rakennettava hakuhakemisto ja aiheiden nimet. |
 | `src/features/concepts/ConceptsPage.tsx`, `ConceptRow.tsx`, `ConceptDetailPage.tsx`, `ConceptComparison.tsx` | Selain, rivit, käsitesivu ja vertailu. |
 | `src/services/speech/VoiceInput.ts`, `SpeechOutput.ts` | Korvattavat selainadapterit; käynnistys, tapahtumat, aikarajat, virheet ja peruutus. |
+| `src/services/concepts/OnlineConceptSearch.ts`, `src/features/concepts/OnlineConceptFallback.tsx` | Korvattava verkkohakurajapinta, Wikipedia-adapteri ja lähteistettyjen tulosten käyttöliittymä. |
 | `src/features/concepts/useVoiceInput.ts`, `SpeakButton.tsx` | Adapterien React-elinkaari ja käyttöliittymän ääneenluku. |
 | `src/styles/concepts.css`, `src/main.tsx` | Olemassa oleviin tokeneihin perustuva ulkoasu. |
 | `src/app/App.tsx`, `src/app/navigation/BottomNavigation.tsx` | Reitit ja navigaatio. |
@@ -87,6 +88,18 @@ Nykyinen käyttöliittymä käyttää aiempaan tapaan staattista `contentCatalog
 
 Sisältömallissa ei ole kiinteää ylärajaa. Lisääminen ei edellytä uutta komponenttia, reittiä, hakuehtoa tai testien lukumäärävakion muuttamista. Nykyinen haku käy esinormalisoidun hakemiston läpi paikallisesti; huomattavasti suuremmille kokoelmille voidaan vaihtaa indeksoitu hakumoottori saman rajapinnan taakse.
 
+### Verkkohaku puuttuvalle käsitteelle
+
+Kun kirjoitetulle tai puhutulle käsitteelle ei löydy yhtään osumaa TAJUn omasta aineistosta, haku jatkuu automaattisesti Wikipediaan. Tulokset näytetään erillisessä **Verkosta**-osiossa: enintään kolme artikkelia, johdantokatkelmat, kieli, lähdelinkit ja CC BY-SA 4.0 -tekijämaininta. **Hae Googlesta** avaa samalla käsitteellä laajemman verkkohaun uuteen välilehteen. Sovelluksen sisäiset verkkotulokset tulevat vain Wikipediasta.
+
+`OnlineConceptSearch` erottaa palveluntarjoajan käyttöliittymästä. Nykyinen `WikipediaConceptSearch` käyttää julkista [MediaWiki Action API:a](https://www.mediawiki.org/wiki/API:Search), [CirrusSearchin otsikkohakua](https://www.mediawiki.org/wiki/Help:CirrusSearch#Intitle_and_incategory) ja [TextExtracts-katkelmia](https://www.mediawiki.org/wiki/Extension:TextExtracts). Haku tehdään ensin suomenkieliseen Wikipediaan ja tyhjällä tuloksella englanninkieliseen. Englanninkielinen haku käyttää samaa hakusanaa; sovellus ei käännä kysymystä tai lähdetekstiä. Rajattu otsikkohaku välttää artikkelit, joissa termi vain mainitaan sivulauseessa. Kaikkia nimiä tai taivutusmuotoja ei siksi löydy.
+
+Kysymysparseri säilyttää verkkoon lähetettävän käsitteen ääkköset. Paikallinen hakuhakemisto normalisoi ne edelleen entiseen tapaan. Verkkohaku odottaa 700 ms kirjoitustaukoa ja vaatii vähintään kolme merkkiä. Olemassa oleva paikallinen osuma, myös kirjoitusvirhe-ehdotus, estää automaattisen verkkohaun. Aihevalinnan piilottamaa paikallista osumaa ei tulkita puuttuvaksi. Vertailussa vain puuttuvat käsitteet haetaan verkosta erikseen; katkelmista ei muodosteta automaattista vertailuvastausta.
+
+Hakusana lähetetään suoraan Wikipediaan [anonyymin CORS-pyynnön](https://www.mediawiki.org/wiki/API:Cross-site_requests#Unauthenticated_CORS_Requests) mukana, ilman evästeitä tai viittaavaa sivuosoitetta. API-avainta, uutta palvelinta tai maksullista palvelua ei tarvita. TAJU ei lisää verkkotuloksia omaan sisältöaineistoon eikä tallenna niitä tai hakuhistoriaa pysyvästi; nykyinen haku näkyy entiseen tapaan sivun URL-parametrissa. Vastaukset validoidaan, teksti renderöidään tekstinä ja artikkelilinkit muodostetaan Wikipedian osoitteesta ja sivutunnisteesta.
+
+Verkkopyyntö keskeytetään haun vaihtuessa tai sivulta poistuttaessa. Kummallakin kielihaulla on kahdeksan sekunnin aikaraja. Katkennut yhteys, API-virhe ja tyhjä tulos näytetään erikseen; epäonnistuneen haun voi yrittää uudelleen. Yhteyden palautuminen käynnistää haun uudelleen. TAJUn oma aineisto toimii edelleen offline-tilassa. Wikipedian löydökset ovat hakuehdotuksia; täsmennyssivu ohjaa käyttäjää valitsemaan oikean merkityksen lähteessä.
+
 ### Puhehaku ja ääneenluku
 
 Mikrofonipainike luo selaimen `SpeechRecognition`- tai `webkitSpeechRecognition`-istunnon kielellä `fi-FI`. Käyttö vaatii selaimen tuen ja suojatun yhteyden (HTTPS tai localhost). TAJU näyttää aluksi käynnistymisen; **Kuunnellaan** näkyy vasta `audiostart`-tapahtumasta. Käynnistyksen rinnalla tarkistetaan jo evätty mikrofonilupa Permissions API:lla, jos selain tukee sitä. Alustava tunnistusteksti näkyy jo kuuntelun aikana **Kuultu (alustava)** -rivillä. `audioend` vaihtaa käsittelytilaan. Lopullinen teksti näytetään **Kuultu**-rivillä ja hakukentässä.
@@ -103,8 +116,10 @@ Selain voi lähettää äänen oman palveluntarjoajansa palveluun ja vaatia verk
 
 ### Tarkistus ja jatkokehitys
 
-Toteutuksen tarkistus 4.10.2026: 102 Vitest-testiä ja 25 Playwright-testiä läpäisty; sisältövalidointi, TypeScript, ESLint ja tuotantobuild läpäisty. Selainkuvat tarkistettu vaaleassa ja tummassa teemassa sekä mobiili- ja työpöytäleveyksillä. Testit kattavat myös sovelluksen aiemmat ydintoiminnot.
+Toteutuksen tarkistus 4.10.2026: 114 Vitest-testiä ja 34 Playwright-testiä läpäisty; sisältövalidointi, TypeScript, ESLint ja tuotantobuild läpäisty. Selainkuvat tarkistettu vaaleassa ja tummassa teemassa sekä mobiili- ja työpöytäleveyksillä. Testit kattavat myös sovelluksen aiemmat ydintoiminnot.
 
 Vitest testaa täydet, osittaiset, suomen- ja englanninkieliset sekä sumeat haut, kysymykset ja vertailujen taivutusmuodot. Ääniadaptereissa testataan tapahtumajärjestys, kuuntelun viimeistely, alustavien tulosten säilyminen ja korvautuminen, moniosaiset kysymykset, peruutus, myöhäiset tapahtumat, aikarajat ja virheet. Playwright tarkistaa koko sovelluksen ydintoiminnot sekä käsitehaun, vertailun, navigoinnin, näppäimistökäytön, 320/390/1280 px leveydet, suuren tekstin, Hiili-teeman, vähennetyn liikkeen ja offline-käytön. Puhehaun regressiotestit tarkistavat lopetuspainikkeen, alustavan tekstin näkyvyyden ja haun sekä erillisen peruutuksen.
+
+Verkkohaun automaattiset testit käyttävät hallittuja HTTP-vastauksia: suomi/englanti, tyhjä tulos, palveluvirhe, uudelleenyritys, aikaraja, vanhan haun peruutus, kirjoitusviive, offline-palautuminen, lähdeviitteet ja HTML:n käsittely tekstinä. Puheesta verkkohakuun siirtyminen testataan selaimessa. Lisäksi **Mikä on emergenssi?** ja **bounded rationality** tarkistettiin oikeita Wikipedia-vastauksia käyttävällä Chromium-selaimella, ilman verkkopyyntöjen korvaamista.
 
 Puhetestit syöttävät hallittuja tapahtumia **testien selainadapteriin**. Erillinen Chromium-testi käyttää aitoa selaimen lupa- ja puheentunnistusrajapintaa evätyn mikrofoniluvan tarkistamiseen. Testit eivät todista fyysisen mikrofonin, suomalaisen tunnistuspalvelun tai laitteen puheäänen toimivuutta. Oikealla laitteella kannattaa tarkistaa nämä kolme asiaa ennen julkaisua. Kaikki sisältö ei ole lähteistetty; lähdekattavuuden ja toimituksellisen tarkistuksen lisääminen on suositeltava seuraava työ. Sen jälkeen hyödyllisiä parannuksia ovat laajempi taivutusmuotojen testiaineisto sekä useampien käsitteiden toimitetut vertailukentät.

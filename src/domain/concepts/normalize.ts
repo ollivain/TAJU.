@@ -1,7 +1,12 @@
-/** Same normalization for the index, keyboard queries and speech transcripts. */
-export function normalizeConceptText(value: string): string {
-  return value.normalize("NFKD").replace(/\p{M}/gu, "").toLocaleLowerCase("fi").replace(/(\p{L}):(?=\p{L})/gu, "$1")
+/** Keep letters intact for display and external search (e.g. sää, not saa). */
+export function cleanConceptText(value: string): string {
+  return value.normalize("NFC").toLocaleLowerCase("fi").replace(/(\p{L}):(?=\p{L})/gu, "$1")
     .replace(/[’']/g, "").replace(/[^\p{L}\p{N}]+/gu, " ").trim().replace(/\s+/g, " ");
+}
+
+/** Same accent-insensitive normalization for the local index and all inputs. */
+export function normalizeConceptText(value: string): string {
+  return cleanConceptText(value.normalize("NFKD").replace(/\p{M}/gu, ""));
 }
 
 /** Deliberately limited Finnish case handling, not a general-purpose stemmer. */

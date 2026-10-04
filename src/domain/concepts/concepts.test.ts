@@ -46,6 +46,12 @@ describe("concept search", () => {
 });
 
 describe("query extraction", () => {
+  it("keeps Finnish letters in extracted terms for online lookup", () => {
+    expect(parseConceptQuery("Mitä sää tarkoittaa?")).toEqual({ kind: "lookup", term: "sää" });
+    expect(parseConceptQuery("Mika on sää?")).toEqual({ kind: "lookup", term: "sää" });
+    expect(parseConceptQuery("Mikä ero on kysynnällä ja tarjonnalla välillä?"))
+      .toEqual({ kind: "compare", terms: ["kysynnällä", "tarjonnalla"] });
+  });
   it.each([
     ["Mikä on Ponzi-huijaus?", "ponzi"],
     ["Mitä tarkoittaa Overtonin ikkuna?", "overton-window"],

@@ -139,3 +139,11 @@ Käsitteitä voi tallentaa pikavastauksesta ja käsitesivulta. Käsitteet-sivun 
 Puhehaku alkaa vain Sano sana -painikkeesta tai iPhonen käyttäjän käynnistämästä sanelupikakomennosta. Automaattista vastauksen ääneenlukua ei lisätty; käsitesivun olemassa oleva Kuuntele-toiminto säilyy.
 
 Version 0.5 tarkistus: 122 yksikkötestiä, 44 mobiili-Chromium-testiä ja 8 mobiili-WebKit-testiä läpäisty. TypeScript, ESLint, sisältövalidointi ja tuotantobuild läpäisty. WebKit-testit kattavat uuden etusivuvalinnan, pikahaun, tallennukset, pikakomento-ohjeen ja mobiiliasettelun. Fyysisen iPhonen sanelua ja Spotifyn tauotusta ei ole testattu.
+
+### Pikahaun ääneenluku (0.5.1)
+
+**Kuuntele selitys** lukee pikahaun sanan tai käsitteen nimen ja lyhyen määritelmän. Painike näkyy ennen esimerkkiä. Wikipedian tuloksissa luetaan näkyvä artikkelin nimi ja katkelma sen omalla kielellä (suomi tai englanti); täsmennyssivuilla ja pelkissä osio-ohjauksissa ei ole kuuntelupainiketta. Vain yksi vastaus puhuu kerrallaan. Lopeta-painike, uusi haku, sanelun aloittaminen, sivulta poistuminen ja sovelluksen piilottaminen pysäyttävät lukemisen.
+
+Kuuntelu käynnistyy napautuksesta myös Toimintopainikkeen pikakomennon jälkeen. WebKit vaatii käyttäjän eleen puheen aloittamiseen ([WebKitin toteutus](https://github.com/WebKit/WebKit/blob/main/Source/WebCore/Modules/speech/SpeechSynthesis.cpp)). Käytössä ovat laitteen selaimelle tarjoamat puheäänet; tämä ei lisää erillistä maksullista puhepalvelua. Oikean iPhonen ääni, äänenvoimakkuus ja Bluetooth-kuulokkeet pitää edelleen tarkistaa laitteella.
+
+Version 0.5.1 tarkistus: 124 yksikkötestiä sekä 48 Chromium- ja 12 WebKit-selaintestiä läpäisty, samoin TypeScript, ESLint ja build. Puhetapahtumat testataan hallitulla selainadapterilla; nämä testit eivät varmista iPhonen puheääntä tai kuulokkeita. Mobiiliasettelu tarkistettu myös selaimessa.

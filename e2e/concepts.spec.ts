@@ -266,7 +266,7 @@ test("read aloud starts on request, reports state and stops on navigation", asyn
   });
   await page.goto("/kasitteet/ponzi-huijaus");
   expect(await page.evaluate(() => "testUtterance" in window)).toBe(false);
-  await page.getByRole("button", { name: "Lue määritelmä ääneen" }).click();
+  await page.getByRole("button", { name: "Kuuntele selitys" }).click();
   await expect(page.getByText("Valmistellaan ääntä…")).toBeVisible();
   await page.evaluate(() => {
     const utterance = (window as unknown as { testUtterance: { onstart: () => void } }).testUtterance;
@@ -274,8 +274,8 @@ test("read aloud starts on request, reports state and stops on navigation", asyn
   });
   await expect(page.getByText("Luetaan määritelmää.")).toBeVisible();
   await page.getByRole("button", { name: "Lopeta lukeminen" }).click();
-  await expect(page.getByRole("button", { name: "Lue määritelmä ääneen" })).toBeVisible();
-  await page.getByRole("button", { name: "Lue määritelmä ääneen" }).click();
+  await expect(page.getByRole("button", { name: "Kuuntele selitys" })).toBeVisible();
+  await page.getByRole("button", { name: "Kuuntele selitys" }).click();
   await page.evaluate(() => { (window as unknown as { testSpeechCancelled: boolean }).testSpeechCancelled = false; });
   await page.getByRole("link", { name: "Takaisin käsitteisiin" }).click();
   await expect.poll(() => page.evaluate(() => (window as unknown as { testSpeechCancelled: boolean }).testSpeechCancelled)).toBe(true);

@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import { useUserState } from "../../app/providers/UserStateContext";
 import { ArrowRightIcon, BookmarkIcon } from "../../components/icons";
-import { lookupName, type LookupEntry } from "../../domain/search/lookup";
+import { lookupKey, lookupName, type LookupEntry } from "../../domain/search/lookup";
+import { SpeakButton } from "./SpeakButton";
 
 export function SaveConceptButton({ conceptId }: { conceptId: string }) {
   const user = useUserState();
@@ -21,12 +22,15 @@ export function LookupResult({ entry, quick = false, returnSearch = "" }: { entr
       <div className="concept-row__body">
         {quick ? <h2 className="word-row__word">{lookupName(entry)}</h2> : <span className="word-row__word">{lookupName(entry)}</span>}
         <span className="concept-row__definition">{item.shortDefinition}</span>
-        {quick && <span className="lookup-example"><span>Esimerkki</span>{item.example}</span>}
-        {quick && entry.type === "concept" && entry.concept.nuanceNote && <span className="concept-meta">{entry.concept.nuanceNote}</span>}
         <span className="concept-meta">{quick ? "Lue lisää" : entry.type === "concept" ? "Käsite" : "Sana"}</span>
       </div>
       <ArrowRightIcon />
     </Link>
+    {quick && <>
+      <SpeakButton key={lookupKey(entry)} text={`${lookupName(entry)}. ${item.shortDefinition}`} />
+      <p className="lookup-example"><span>Esimerkki</span>{item.example}</p>
+      {entry.type === "concept" && entry.concept.nuanceNote && <p className="concept-meta">{entry.concept.nuanceNote}</p>}
+    </>}
     {quick && <button className="text-button lookup-save" type="button" disabled={!user.ready} aria-pressed={saved} onClick={() => entry.type === "concept" ? user.toggleConceptSaved(item.id) : user.toggleSaved(item.id)}>
       <BookmarkIcon filled={saved} />{saved ? "Tallennettu" : "Tallenna myöhemmäksi"}
     </button>}

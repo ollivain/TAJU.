@@ -2,11 +2,13 @@ export type SpeechOutputStatus = "idle" | "starting" | "speaking" | "unavailable
 export interface SpeechOutput {
   subscribe(listener: () => void): () => void;
   getSnapshot(): SpeechOutputStatus;
-  speak(text: string): void;
+  speak(text: string, lang?: string): void;
   stop(): void;
 }
 
 export class BrowserSpeechOutput implements SpeechOutput {
+  // All result buttons share the browser's single speech queue.
+  private static active?: BrowserSpeechOutput;
   private synth = typeof window !== "undefined" ? window.speechSynthesis : undefined;
   private status: SpeechOutputStatus = this.synth && typeof SpeechSynthesisUtterance !== "undefined" ? "idle" : "unavailable";
   private listeners = new Set<() => void>();
@@ -17,20 +19,26 @@ export class BrowserSpeechOutput implements SpeechOutput {
   private publish(status: SpeechOutputStatus) { this.status = status; this.listeners.forEach((listener) => listener()); }
   private release() {
     clearTimeout(this.timer);
+    if (BrowserSpeechOutput.active === this) BrowserSpeechOutput.active = undefined;
     if (this.utterance) {
       this.utterance.onstart = this.utterance.onend = this.utterance.onerror = null;
       this.utterance = undefined;
       this.synth?.cancel();
     }
   }
-  speak = (text: string) => {
+  speak = (text: string, lang = "fi-FI") => {
     if (!this.synth || this.status === "unavailable") return;
+    BrowserSpeechOutput.active?.stop();
     this.release();
     try {
       const utterance = new SpeechSynthesisUtterance(text);
       this.utterance = utterance;
-      utterance.lang = "fi-FI";
-      const voice = this.synth.getVoices().find((voice) => /^fi(?:-|$)/i.test(voice.lang));
+      BrowserSpeechOutput.active = this;
+      utterance.lang = lang;
+      const voices = this.synth.getVoices();
+      const language = lang.toLowerCase().split("-")[0];
+      const voice = voices.find((voice) => voice.lang.toLowerCase() === lang.toLowerCase())
+        ?? voices.find((voice) => voice.lang.toLowerCase().split("-")[0] === language);
       if (voice) utterance.voice = voice;
       utterance.onstart = () => {
         if (this.utterance !== utterance) return;

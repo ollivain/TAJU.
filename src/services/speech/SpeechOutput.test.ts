@@ -12,7 +12,7 @@ function setup() {
     onerror: (() => void) | null = null;
     constructor(text: string) { this.text = text; }
   }
-  const synth = { speak: vi.fn(), cancel: vi.fn(), getVoices: () => [{ lang: "fi-FI" }] };
+  const synth = { speak: vi.fn(), cancel: vi.fn(), getVoices: () => [{ lang: "fi-FI" }, { lang: "en-GB" }] };
   vi.stubGlobal("SpeechSynthesisUtterance", Utterance);
   vi.stubGlobal("speechSynthesis", synth);
   const output = new BrowserSpeechOutput();
@@ -49,5 +49,27 @@ describe("speech output", () => {
     vi.stubGlobal("speechSynthesis", undefined);
     const output = new BrowserSpeechOutput(); output.speak("Testi");
     expect(output.getSnapshot()).toBe("unavailable");
+  });
+  it("uses the result language and falls back to a matching language voice", () => {
+    const { output, utterance } = setup();
+    output.speak("An English definition.", "en-US");
+    expect(utterance().lang).toBe("en-US");
+    expect(utterance().voice).toEqual({ lang: "en-GB" });
+    output.stop();
+  });
+  it("replaces another result's speech without letting its cleanup cancel the new result", () => {
+    const { output, synth, utterance } = setup();
+    const second = new BrowserSpeechOutput();
+    output.speak("Ensimmäinen.");
+    const stale = utterance().onend;
+    second.speak("Toinen.");
+    expect(synth.cancel).toHaveBeenCalledTimes(1);
+    expect(output.getSnapshot()).toBe("idle");
+    expect(second.getSnapshot()).toBe("starting");
+    output.stop();
+    stale?.();
+    expect(synth.cancel).toHaveBeenCalledTimes(1);
+    expect(second.getSnapshot()).toBe("starting");
+    second.stop();
   });
 });

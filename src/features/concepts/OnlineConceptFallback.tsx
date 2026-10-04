@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { onlineConceptSearch, type OnlineConceptResult } from "../../services/concepts/OnlineConceptSearch";
+import { SpeakButton } from "./SpeakButton";
 
 type SearchState = { status: "waiting" | "loading" | "error" } | { status: "done"; results: OnlineConceptResult[] };
 
@@ -55,6 +56,7 @@ export function OnlineConceptFallback({ term }: { term: string }) {
           : result.section ? <p>Käsite löytyy lähdeartikkelin osiosta ”{result.section.replaceAll("_", " ")}”. Avaa lähde lukeaksesi sen.</p>
             : result.extract ? <p lang={result.language}>{result.extract}</p>
             : <p>Avaa lähde lukeaksesi lisää.</p>}
+        {result.extract && !result.disambiguation && !result.section && <SpeakButton text={`${result.title}. ${result.extract}`} lang={result.language === "en" ? "en-US" : "fi-FI"} />}
       </article>)}
       <div className="concept-online__actions">
         {online && state.status === "error" && <button type="button" className="text-button text-button--accent" onClick={() => { setState({ status: "waiting" }); setAttempt((value) => value + 1); }}>Yritä verkkohakua uudelleen</button>}

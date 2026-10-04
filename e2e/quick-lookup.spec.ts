@@ -1,4 +1,32 @@
-import { expect, test } from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
+
+interface TestSpeech {
+  calls: { text: string; lang: string }[];
+  cancellations: number;
+  current?: { onstart?: () => void; onend?: () => void; onerror?: () => void };
+}
+
+async function installSpeech(page: Page) {
+  await page.addInitScript(() => {
+    const host = window as unknown as { testSpeech: TestSpeech; SpeechSynthesisUtterance: unknown };
+    host.testSpeech = { calls: [], cancellations: 0 };
+    host.SpeechSynthesisUtterance = class { constructor(public text: string) {} };
+    Object.defineProperty(window, "speechSynthesis", { value: {
+      getVoices: () => [{ lang: "fi-FI" }, { lang: "en-US" }],
+      speak: (utterance: { text: string; lang: string; onstart?: () => void }) => {
+        host.testSpeech.calls.push({ text: utterance.text, lang: utterance.lang });
+        host.testSpeech.current = utterance;
+        queueMicrotask(() => utterance.onstart?.());
+      },
+      cancel: () => { host.testSpeech.cancellations++; },
+    } });
+  });
+}
+
+const speechState = (page: Page) => page.evaluate(() => {
+  const { calls, cancellations } = (window as unknown as { testSpeech: TestSpeech }).testSpeech;
+  return { calls, cancellations };
+});
 
 test.beforeEach(async ({ page }) => {
   await page.route("https://*.wikipedia.org/w/api.php?*", (route) => route.fulfill({ json: { batchcomplete: true } }));
@@ -117,4 +145,62 @@ test("new PWA installations launch the preference-aware root", async ({ request 
   const manifest = await (await request.get("/manifest.webmanifest")).json();
   expect(manifest.start_url).toBe("/");
   expect(manifest.id).toBe("/");
+});
+
+test("quick answers read the selected word or concept and stop on a new query or navigation", async ({ page }) => {
+  await installSpeech(page);
+  await page.goto("/hae?q=paradoksi");
+  const answer = page.getByRole("article", { name: "Nopea selitys" });
+  expect((await speechState(page)).calls).toEqual([]);
+  await answer.getByRole("button", { name: "Kuuntele selitys" }).click();
+  await expect(answer.getByText("Luetaan määritelmää.")).toBeVisible();
+  expect((await speechState(page)).calls).toEqual([{ text: "Paradoksi. Näennäisesti ristiriitainen väite tai ilmiö, joka voi silti olla tosi.", lang: "fi-FI" }]);
+  await page.getByRole("searchbox").fill("oikofobia");
+  await expect(answer.getByRole("button", { name: "Kuuntele selitys" })).toBeVisible();
+  expect((await speechState(page)).cancellations).toBe(1);
+  await answer.getByRole("button", { name: "Kuuntele selitys" }).click();
+  expect((await speechState(page)).calls[1].text).toMatch(/^Oikofobia\./);
+  await answer.getByRole("button", { name: "Lopeta lukeminen" }).click();
+  await expect(answer.getByRole("button", { name: "Kuuntele selitys" })).toBeVisible();
+  await answer.getByRole("button", { name: "Kuuntele selitys" }).click();
+  await page.getByRole("link", { name: "Asetukset", exact: true }).click();
+  await expect(page).toHaveURL(/\/asetukset$/);
+  await expect.poll(async () => (await speechState(page)).cancellations).toBe(3);
+});
+
+test("online definitions read in their own language and stop when the app is hidden", async ({ page }) => {
+  await installSpeech(page);
+  await page.route("https://*.wikipedia.org/w/api.php?*", (route) => route.fulfill({ json:
+    new URL(route.request().url()).hostname === "fi.wikipedia.org" ? { batchcomplete: true }
+      : { query: { pages: [{ pageid: 123, title: "Bounded rationality", extract: "Bounded rationality is a concept." }] } },
+  }));
+  await page.goto("/hae?q=bounded+rationality");
+  const result = page.locator(".concept-online__result");
+  await result.getByRole("button", { name: "Kuuntele selitys" }).click();
+  expect((await speechState(page)).calls).toEqual([{ text: "Bounded rationality. Bounded rationality is a concept.", lang: "en-US" }]);
+  await page.evaluate(() => {
+    Object.defineProperty(document, "hidden", { value: true, configurable: true });
+    document.dispatchEvent(new Event("visibilitychange"));
+  });
+  await expect(result.getByRole("button", { name: "Kuuntele selitys" })).toBeVisible();
+  expect((await speechState(page)).cancellations).toBe(1);
+});
+
+test("read aloud failures allow retry", async ({ page }) => {
+  await installSpeech(page);
+  await page.goto("/hae?q=paradoksi");
+  const listen = page.getByRole("button", { name: "Kuuntele selitys" });
+  await listen.click();
+  await page.evaluate(() => (window as unknown as { testSpeech: TestSpeech }).testSpeech.current?.onerror?.());
+  await expect(page.getByText("Ääneenluku ei onnistunut. Kokeile uudelleen.")).toBeVisible();
+  await listen.click();
+  expect((await speechState(page)).calls).toHaveLength(2);
+});
+
+test("unsupported speech keeps the explanation readable", async ({ page }) => {
+  await page.addInitScript(() => { Object.defineProperty(window, "speechSynthesis", { value: undefined, configurable: true }); });
+  await page.goto("/hae?q=paradoksi");
+  await expect(page.getByRole("button", { name: "Kuuntele selitys" })).toBeDisabled();
+  await expect(page.getByText("Ääneenluku ei ole käytettävissä tässä selaimessa.")).toBeVisible();
+  await expect(page.locator(".quick-answer")).toContainText("Näennäisesti ristiriitainen");
 });

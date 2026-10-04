@@ -114,7 +114,7 @@ export function ConceptsPage() {
               <details className="concept-voice-info"><summary>Tietoa puhehausta</summary><p>Selaimesi voi lähettää äänen puhepalveluunsa tunnistettavaksi. Puhehaku voi tarvita verkkoyhteyden. TAJU ei tallenna ääntä. iPhonen Safari voi tarvita myös Sirin ja puheentunnistuksen sallimisen. Voit myös sanella hakukenttään iPhonen näppäimistön mikrofonilla.</p></details>
             </div>
           </form>
-          {visibleQuickAnswer && !busy && <LookupResult entry={visibleQuickAnswer.value} quick returnSearch={`?${params.toString()}`} />}
+          {visibleQuickAnswer && !busy && <LookupResult key={query} entry={visibleQuickAnswer.value} quick returnSearch={`?${params.toString()}`} />}
           {!busy && missingTerms.map((term) => <OnlineConceptFallback key={term} term={term} />)}
           {!query.trim() && <>
             <p className="lookup-shortcut-link"><Link to="/pikakomento">Hae iPhonen Toimintopainikkeella</Link></p>

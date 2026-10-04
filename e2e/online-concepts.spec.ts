@@ -4,6 +4,38 @@ const api = "https://*.wikipedia.org/w/api.php?*";
 const entry = { pageid: 13855, title: "Emergenssi", index: 1, extract: "Emergenssi tarkoittaa kokonaisuudesta syntyvää uutta ominaisuutta." };
 const response = { batchcomplete: true, query: { pages: [entry] } };
 
+test("Diversiteetti resolves its exact redirect instead of the unrelated first search result", async ({ page }, testInfo) => {
+  const requests: string[] = [];
+  await page.route(api, async (route) => {
+    requests.push(route.request().url());
+    const params = new URL(route.request().url()).searchParams;
+    await route.fulfill({ json: params.get("titles") === "diversiteetti" ? { query: {
+      redirects: [{ from: "Diversiteetti", to: "Monimuotoisuus (sosiologia)" }],
+      pages: [{ pageid: 1914137, title: "Monimuotoisuus (sosiologia)", extract: "Monimuotoisuus eli diversiteetti on keskeinen käsite sosiologiassa ja politologiassa." }],
+    } } : { query: { pages: [{ ...entry, title: "Monikulttuurisuus" }] } } });
+  });
+  await page.goto("/kasitteet?q=Diversiteetti");
+  const section = page.getByRole("region", { name: "Verkosta: diversiteetti" });
+  await expect(section.getByRole("status")).toHaveText("Kysytty käsite löytyi Wikipediasta.");
+  await expect(section.getByRole("link", { name: /^Diversiteetti/ })).toHaveAttribute("href", "https://fi.wikipedia.org/?curid=1914137");
+  await expect(section).toContainText("Lähdeartikkeli: Monimuotoisuus (sosiologia)");
+  await expect(section).toContainText("Monimuotoisuus eli diversiteetti");
+  await expect(section).not.toContainText("Monikulttuurisuus");
+  expect(requests).toHaveLength(1);
+  await section.scrollIntoViewIfNeeded();
+  await page.screenshot({ path: testInfo.outputPath("diversiteetti.png") });
+});
+
+test("related search results are clearly distinguished from the requested concept", async ({ page }) => {
+  await page.route(api, (route) => route.fulfill({ json: new URL(route.request().url()).searchParams.has("titles")
+    ? { batchcomplete: true, query: { pages: [{ title: "Puuttuva käsite", missing: true }] } }
+    : { query: { pages: [{ ...entry, title: "Aiheeseen liittyvä artikkeli" }] } } }));
+  await page.goto("/kasitteet?q=puuttuva+k%C3%A4site");
+  const section = page.getByRole("region", { name: "Verkosta: puuttuva käsite" });
+  await expect(section.getByRole("status")).toHaveText("Täsmällistä käsitettä ei löytynyt. Alla on aiheeseen liittyviä hakutuloksia.");
+  await expect(section.getByRole("link", { name: /Aiheeseen liittyvä artikkeli/ })).toBeVisible();
+});
+
 test("unknown questions find an attributed definition online; local hits stay local", async ({ page }) => {
   const requests: string[] = [];
   await page.route(api, async (route) => { requests.push(route.request().url()); await route.fulfill({ json: response }); });
@@ -18,7 +50,7 @@ test("unknown questions find an attributed definition online; local hits stay lo
   await expect(section).toContainText("Wikipedia · Suomi");
   await expect(section.getByRole("link", { name: /CC BY-SA/ })).toBeVisible();
   expect(requests).toHaveLength(1);
-  expect(new URL(requests[0]).searchParams.get("gsrsearch")).toBe('intitle:"emergenssi"');
+  expect(new URL(requests[0]).searchParams.get("titles")).toBe("emergenssi");
   await page.getByRole("searchbox").fill("Ponzi");
   await expect(section).toHaveCount(0);
 });
@@ -57,7 +89,7 @@ test("changed queries cannot receive a stale network result", async ({ page }) =
   let release!: () => void;
   const pending = new Promise<void>((resolve) => { release = resolve; });
   await page.route(api, async (route) => {
-    const old = new URL(route.request().url()).searchParams.get("gsrsearch")?.includes("emergenssi");
+    const old = new URL(route.request().url()).searchParams.get("titles") === "emergenssi";
     if (old) await pending;
     await route.fulfill({ json: old ? response : { query: { pages: [{ ...entry, title: "Entropia", extract: "Uuden haun tulos." }] } } });
   });
@@ -89,7 +121,7 @@ test("short queries, rapid typing and category-hidden local hits do not trigger 
   await page.clock.fastForward(700);
   await expect(page.locator(".concept-online")).toContainText(entry.extract);
   expect(requests).toHaveLength(1);
-  expect(new URL(requests[0]).searchParams.get("gsrsearch")).toBe('intitle:"emergenssi"');
+  expect(new URL(requests[0]).searchParams.get("titles")).toBe("emergenssi");
 });
 
 test("offline lookup recovers after reconnecting and local search stays usable", async ({ page, context }) => {

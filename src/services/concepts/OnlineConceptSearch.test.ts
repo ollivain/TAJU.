@@ -8,34 +8,68 @@ const signal = () => new AbortController().signal;
 afterEach(() => vi.useRealTimers());
 
 describe("Wikipedia concept search", () => {
-  it("searches anonymously with Finnish spelling and returns ranked, attributed results", async () => {
+  it("looks up the exact title anonymously with Finnish spelling and safe source links", async () => {
     const fetcher = vi.fn().mockResolvedValue(reply({ query: { pages: [
-      { ...page, pageid: 2, title: "Toinen", index: 2, fullurl: "javascript:alert(1)" }, page,
+      { ...page, title: "Sää", fullurl: "javascript:alert(1)" },
     ] } }));
     const results = await new WikipediaConceptSearch(fetcher).search("Sää?!", signal());
     const [url, options] = fetcher.mock.calls[0];
-    expect(new URL(url).searchParams.get("gsrsearch")).toBe('intitle:"sää"');
+    expect(new URL(url).searchParams.get("titles")).toBe("sää");
+    expect(new URL(url).searchParams.get("redirects")).toBe("1");
     expect(new URL(url).searchParams.get("origin")).toBe("*");
     expect(options).toMatchObject({ credentials: "omit", referrerPolicy: "no-referrer" });
-    expect(results.map((result) => result.title)).toEqual(["Emergenssi", "Toinen"]);
-    expect(results[1].url).toBe("https://fi.wikipedia.org/?curid=2");
-    expect(results[0]).toMatchObject({ language: "fi", extract: page.extract, disambiguation: false });
+    expect(results[0]).toMatchObject({ title: "Sää", url: "https://fi.wikipedia.org/?curid=13855", match: "exact", language: "fi", extract: page.extract, disambiguation: false });
     expect(fetcher).toHaveBeenCalledOnce();
   });
 
   it("tries English only after an empty Finnish search", async () => {
-    const fetcher = vi.fn().mockResolvedValueOnce(reply({ batchcomplete: true }))
+    const fetcher = vi.fn().mockResolvedValueOnce(reply({ query: { pages: [{ title: "Bounded rationality", missing: true }] } }))
       .mockResolvedValueOnce(reply({ query: { pages: [{ ...page, title: "Bounded rationality" }] } }));
     const results = await new WikipediaConceptSearch(fetcher).search("bounded rationality", signal());
     expect(new URL(fetcher.mock.calls[0][0]).host).toBe("fi.wikipedia.org");
     expect(new URL(fetcher.mock.calls[1][0]).host).toBe("en.wikipedia.org");
-    expect(results[0]).toMatchObject({ language: "en", url: "https://en.wikipedia.org/?curid=13855" });
+    expect(results[0]).toMatchObject({ language: "en", url: "https://en.wikipedia.org/?curid=13855", match: "exact" });
+    expect(fetcher.mock.calls.every(([url]) => new URL(url).searchParams.has("titles"))).toBe(true);
   });
 
   it("returns an honest empty result when neither language has a match", async () => {
     const fetcher = vi.fn().mockImplementation(async () => reply({ batchcomplete: true }));
     expect(await new WikipediaConceptSearch(fetcher).search("kvanttikirahvi", signal())).toEqual([]);
-    expect(fetcher).toHaveBeenCalledTimes(2);
+    expect(fetcher).toHaveBeenCalledTimes(4);
+  });
+
+  it("resolves the requested alias before broad search can return a related topic", async () => {
+    const fetcher = vi.fn().mockResolvedValue(reply({ query: {
+      redirects: [{ from: "Diversiteetti", to: "Monimuotoisuus (sosiologia)" }],
+      pages: [{ pageid: 1914137, title: "Monimuotoisuus (sosiologia)", extract: "Monimuotoisuus eli diversiteetti." }],
+    } }));
+    const results = await new WikipediaConceptSearch(fetcher).search("diversiteetti", signal());
+    expect(results).toHaveLength(1);
+    expect(results[0]).toMatchObject({ title: "Monimuotoisuus (sosiologia)", redirectedFrom: "Diversiteetti", match: "redirect", extract: "Monimuotoisuus eli diversiteetti." });
+    expect(fetcher).toHaveBeenCalledOnce();
+  });
+
+  it("uses title search only after exact lookups, ranks exact matches first and labels other results", async () => {
+    const fetcher = vi.fn().mockResolvedValueOnce(reply({ batchcomplete: true }))
+      .mockResolvedValueOnce(reply({ batchcomplete: true }))
+      .mockResolvedValueOnce(reply({ query: { pages: [
+        { ...page, pageid: 2, title: "Sään ennustaminen", index: 1 },
+        { ...page, title: "Sää", index: 2 },
+      ] } }));
+    const results = await new WikipediaConceptSearch(fetcher).search("sää", signal());
+    expect(new URL(fetcher.mock.calls[2][0]).searchParams.get("gsrsearch")).toBe('intitle:"sää"');
+    expect(results.map(({ title, match }) => ({ title, match }))).toEqual([
+      { title: "Sää", match: "exact" }, { title: "Sään ennustaminen", match: "related" },
+    ]);
+  });
+
+  it("does not present an article introduction as the definition of a redirected section", async () => {
+    const fetcher = vi.fn().mockResolvedValue(reply({ query: {
+      redirects: [{ from: "Hakusana", to: "Laaja aihe", tofragment: "Tarkempi merkitys" }],
+      pages: [{ ...page, title: "Laaja aihe", extract: "Tämä johdanto kertoo eri asiasta." }],
+    } }));
+    const results = await new WikipediaConceptSearch(fetcher).search("hakusana", signal());
+    expect(results[0]).toMatchObject({ redirectedFrom: "Hakusana", section: "Tarkempi merkitys", extract: "", url: "https://fi.wikipedia.org/?curid=13855#Tarkempi_merkitys" });
   });
 
   it("marks disambiguation pages and tolerates missing extracts", async () => {

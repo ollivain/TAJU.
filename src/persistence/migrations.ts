@@ -36,7 +36,7 @@ const recentIds = (value: unknown, key: string): string[] => {
 };
 
 export const migrateUserState = (value: unknown): PersistedUserState => {
-  if (!isRecord(value) || (value.schemaVersion !== 1 && value.schemaVersion !== 2)) {
+  if (!isRecord(value) || ![1, 2, 3].includes(value.schemaVersion as number)) {
     return createEmptyUserState();
   }
 
@@ -54,9 +54,11 @@ export const migrateUserState = (value: unknown): PersistedUserState => {
   const factFeedValue = isRecord(value.factFeed) ? value.factFeed : {};
 
   return {
-    schemaVersion: 2,
+    schemaVersion: 3,
     words,
     facts,
+    savedConcepts: Array.isArray(value.savedConcepts)
+      ? [...new Set(value.savedConcepts.filter((id): id is string => typeof id === "string"))] : [],
     feed: {
       currentWordId:
         typeof feedValue.currentWordId === "string" ? feedValue.currentWordId : undefined,

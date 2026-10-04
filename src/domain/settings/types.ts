@@ -16,6 +16,12 @@ export const TEXT_SIZES = [
 
 export type TextSizeId = (typeof TEXT_SIZES)[number]["id"];
 
+export const HOME_PAGES = [
+  { id: "sanat", label: "Sanat" },
+  { id: "kasitteet", label: "Käsitteet" },
+] as const;
+export type HomePage = (typeof HOME_PAGES)[number]["id"];
+
 /** Reader preferences. Device-local and independent of word progress. */
 export interface AppSettings {
   schemaVersion: 1;
@@ -23,6 +29,7 @@ export interface AppSettings {
   textSize: TextSizeId;
   motion: boolean;
   showEtymology: boolean;
+  homePage: HomePage;
 }
 
 export const createDefaultSettings = (): AppSettings => ({
@@ -31,6 +38,7 @@ export const createDefaultSettings = (): AppSettings => ({
   textSize: "normaali",
   motion: true,
   showEtymology: true,
+  homePage: "sanat",
 });
 
 export const isThemeId = (value: unknown): value is ThemeId =>

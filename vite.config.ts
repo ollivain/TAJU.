@@ -25,7 +25,7 @@ export default defineConfig(({ command }) => {
           description:
             "Opi kiinnostavia ja käyttökelpoisia suomalaisia sanoja muutamassa minuutissa.",
           lang: "fi",
-          start_url: `${base}sanat`,
+          start_url: base,
           scope: base,
           display: "standalone",
           background_color: "#cadde9",

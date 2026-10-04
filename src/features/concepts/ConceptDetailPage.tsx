@@ -6,6 +6,7 @@ import { contentCatalog } from "../../content/loadContent";
 import { conceptCategoryLabels } from "./catalog";
 import { ConceptRow } from "./ConceptRow";
 import { SpeakButton } from "./SpeakButton";
+import { SaveConceptButton } from "./LookupResult";
 
 export function ConceptDetailPage() {
   const { slug } = useParams();
@@ -34,6 +35,7 @@ export function ConceptDetailPage() {
               {concept.nuanceNote && <p className="concept-label">Määritelmä ja käyttötavat</p>}
               <p className="concept-definition">{concept.shortDefinition}</p>
               <SpeakButton key={concept.id} text={`${concept.name}. ${concept.shortDefinition}`} />
+              <SaveConceptButton conceptId={concept.id} />
               <section className="concept-example" aria-label="Esimerkki">
                 <h2 className="settings-heading">Esimerkki</h2>
                 <p>{concept.example}</p>

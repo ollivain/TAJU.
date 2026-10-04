@@ -1,9 +1,10 @@
 import { Fragment, useEffect, useRef, useState, type CSSProperties } from "react";
+import { Link } from "react-router-dom";
 import { useSettings } from "../../app/providers/SettingsContext";
 import { useUserState } from "../../app/providers/UserStateContext";
 import { APP_VERSION } from "../../app/version";
 import { Squiggle } from "../../components/ui/Squiggle";
-import { TEXT_SIZES, THEMES, themeLabel } from "../../domain/settings/types";
+import { HOME_PAGES, TEXT_SIZES, THEMES, themeLabel } from "../../domain/settings/types";
 import { contentCatalog } from "../../content/loadContent";
 
 export function SettingsPage() {
@@ -34,6 +35,23 @@ export function SettingsPage() {
         <div className="screen__inner screen__inner--settings">
           <Squiggle weight={1.2} opacity={0.5} />
           <h1 className="display-heading settings-title">Asetukset</h1>
+
+          <section className="settings-section" aria-labelledby="home-page-label">
+            <h2 id="home-page-label" className="settings-heading">Etusivu</h2>
+            <div className="home-options" role="group" aria-label="Etusivu">
+              {HOME_PAGES.map((home) => <button type="button" key={home.id} className="size-option" aria-pressed={settings.homePage === home.id} onClick={() => updateSettings({ homePage: home.id })}>{home.label}</button>)}
+            </div>
+            <p className="settings-help">Valitse, mistä TAJU alkaa. Kesken oleva näkymä säilyy, kun palaat avoimeen sovellukseen.</p>
+            <Link className="text-button text-button--accent settings-start" to="/">Avaa etusivu</Link>
+          </section>
+
+          <section className="settings-section">
+            <h2 className="settings-heading">Nopea puhehaku</h2>
+            <p className="settings-help">Sanele kuulemasi sana iPhonen Toimintopainikkeella ja avaa sen selitys TAJUssa.</p>
+            <Link className="text-button text-button--accent settings-start" to="/pikakomento">Ota iPhonen pikakomento käyttöön</Link>
+          </section>
+
+          <Squiggle className="settings-rule" weight={1} opacity={0.34} />
 
           <section className="settings-section">
             <h2 className="settings-heading">Tausta</h2>
@@ -119,6 +137,7 @@ export function SettingsPage() {
                 <dt>Tallennetut sanat</dt>
                 <dd>{savedCount}</dd>
               </div>
+              {userState.data.savedConcepts.length > 0 && <div className="settings-stat"><dt>Tallennetut käsitteet</dt><dd>{userState.data.savedConcepts.length}</dd></div>}
             </dl>
           </section>
 

@@ -17,6 +17,7 @@ import {
   setFactKnown,
   setKnown,
   toggleFactSaved,
+  toggleConceptSaved,
   toggleSaved,
 } from "../../services/UserStateService";
 import { UserStateContext, type UserStateContextValue } from "./UserStateContext";
@@ -98,6 +99,7 @@ export function UserStateProvider({ children, repository }: UserStateProviderPro
     () => ({
       ...state,
       toggleSaved: (wordId) => commit((current) => toggleSaved(current, wordId, new Date().toISOString())),
+      toggleConceptSaved: (conceptId) => commit((current) => toggleConceptSaved(current, conceptId)),
       toggleKnown: (wordId, known) =>
         commit((current) =>
           setKnown(

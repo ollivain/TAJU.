@@ -10,7 +10,7 @@ const isFutureSchema = (value: unknown): boolean =>
   value !== null &&
   "schemaVersion" in value &&
   typeof value.schemaVersion === "number" &&
-  value.schemaVersion > 2;
+  value.schemaVersion > 3;
 
 export class LocalStorageUserWordStateRepository implements UserWordStateRepository {
   private writable = true;

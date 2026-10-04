@@ -14,6 +14,11 @@ export default defineConfig({
       name: "mobile-chromium",
       use: { ...devices["Pixel 7"] },
     },
+    {
+      name: "mobile-webkit",
+      testMatch: "quick-lookup.spec.ts",
+      use: { ...devices["iPhone 13"] },
+    },
   ],
   webServer: {
     command: "npm run build && npm run preview -- --host 127.0.0.1",

@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { useUserState } from "../../app/providers/UserStateContext";
 import { ArrowRightIcon } from "../../components/icons";
 import { contentCatalog } from "../../content/loadContent";
@@ -7,6 +7,10 @@ import { WordArticle } from "../word-feed/WordArticle";
 
 export function WordDetailPage() {
   const { slug } = useParams();
+  const location = useLocation();
+  const routeState = location.state as { fromLookup?: boolean; returnSearch?: unknown } | null;
+  const returnSearch = typeof routeState?.returnSearch === "string" && routeState.returnSearch.startsWith("?") ? routeState.returnSearch : "";
+  const returnPath = routeState?.fromLookup ? `/kasitteet${returnSearch}` : "/loyda";
   const userState = useUserState();
   const word = slug ? contentCatalog.wordsBySlug.get(slug) : undefined;
 
@@ -33,7 +37,7 @@ export function WordDetailPage() {
     <div className="screen">
       <div className="screen__scroll">
         <div className="screen__inner">
-          <Link className="back-link" to="/loyda">
+          <Link className="back-link" to={returnPath}>
             <ArrowRightIcon />
             Takaisin hakuun
           </Link>

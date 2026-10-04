@@ -929,15 +929,11 @@ p {
 /* ------------------------------------------------------------------ notice */
 
 .notice {
-  position: fixed;
-  z-index: 40;
-  top: calc(var(--header-height) + var(--space-3));
-  right: var(--space-3);
-  left: var(--space-3);
   display: flex;
+  flex: none;
   width: min(calc(100% - var(--space-6)), var(--content-width));
   min-height: 52px;
-  margin: 0 auto;
+  margin: 0 auto var(--space-3);
   padding: var(--space-3) var(--space-4);
   align-items: center;
   gap: var(--space-3);
@@ -997,3 +993,14 @@ p {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Start page preference and one-time iPhone shortcut setup. */
+.home-options { display: flex; gap: var(--space-6); margin-top: var(--space-3); }
+.settings-help { margin: 10px 0; color: var(--color-ink-78); font-size: var(--text-sm); line-height: 1.6; overflow-wrap: anywhere; }
+.settings-start { display: inline-flex; align-items: center; text-underline-offset: 4px; }
+.shortcut-guide .settings-heading { margin-top: var(--space-6); }
+.shortcut-guide .concept-title { margin: var(--space-6) 0 var(--space-4); }
+.shortcut-flow { margin: var(--space-6) 0; font-size: var(--text-body); font-weight: 500; }
+.shortcut-steps { padding-left: 22px; font-size: var(--text-body); line-height: 1.65; color: var(--color-ink-88); }
+.shortcut-steps li { padding-left: 4px; margin-bottom: var(--space-4); }
+.shortcut-address { display: block; width: 100%; min-height: var(--tap-target); margin-top: var(--space-3); padding: 10px; border: 1px solid var(--color-ink-34); border-radius: 0; background: var(--color-canvas); color: var(--color-ink); font-size: var(--text-sm); }

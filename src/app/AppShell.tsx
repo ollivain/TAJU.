@@ -24,10 +24,6 @@ export function AppShell() {
           <Settings size={24} strokeWidth={1.5} aria-hidden="true" focusable="false" />
         </NavLink>
       </header>
-      <main id="main-content" className="app-main">
-        <Outlet />
-      </main>
-      <BottomNavigation />
       <PwaStatus />
       {storageError ? (
         <div className="notice" role="status">
@@ -37,6 +33,10 @@ export function AppShell() {
           </button>
         </div>
       ) : null}
+      <main id="main-content" className="app-main">
+        <Outlet />
+      </main>
+      <BottomNavigation />
     </div>
   );
 }

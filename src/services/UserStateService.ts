@@ -4,6 +4,13 @@ import type {
   UserWordState,
 } from "../domain/user-state/types";
 
+export const toggleConceptSaved = (state: PersistedUserState, conceptId: string): PersistedUserState => ({
+  ...state,
+  savedConcepts: state.savedConcepts.includes(conceptId)
+    ? state.savedConcepts.filter((id) => id !== conceptId)
+    : [...state.savedConcepts, conceptId],
+});
+
 const existingOrDefault = (
   state: PersistedUserState,
   wordId: string,

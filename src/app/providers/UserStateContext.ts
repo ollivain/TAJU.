@@ -10,10 +10,11 @@ export interface UserStateContextValue {
   setCurrentWord(wordId: string): void;
   advance(currentWordId: string, nextWordId?: string, markKnown?: boolean): void;
   toggleFactSaved(factId: string): void;
+  toggleConceptSaved(conceptId: string): void;
   toggleFactKnown(factId: string, known?: boolean): void;
   setCurrentFact(factId?: string): void;
   advanceFact(currentFactId: string, nextFactId?: string, markKnown?: boolean): void;
-  /** Clears saved and known words and facts plus both feed positions. Settings are untouched. */
+  /** Clears saved concepts, words and facts plus learning progress. Settings are untouched. */
   resetProgress(): void;
   dismissStorageError(): void;
 }

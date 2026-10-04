@@ -42,11 +42,11 @@ async function emitVoice(page: Page, event: "audio" | "end-audio" | "end" | "res
 test("stopping the microphone preserves speech and runs the search", async ({ page }) => {
   await installVoice(page);
   await page.goto("/kasitteet");
-  await page.getByRole("button", { name: "Hae puhumalla" }).click();
+  await page.getByRole("button", { name: "Sano sana" }).click();
   await emitVoice(page, "audio");
   await emitVoice(page, "result", "Mikä on Ponzi", 0, false);
   await expect(page.locator(".concept-transcript")).toContainText("Kuultu (alustava): Mikä on Ponzi");
-  await page.getByRole("button", { name: "Lopeta kuuntelu ja hae", exact: true }).click();
+  await page.getByRole("button", { name: "Lopeta ja hae", exact: true }).click();
   expect(await page.evaluate(() => (window as unknown as { testStopped: boolean }).testStopped)).toBe(true);
   expect(await page.evaluate(() => (window as unknown as { testAborted?: boolean }).testAborted)).not.toBe(true);
   await expect(page.locator(".concept-mic")).toHaveAttribute("data-listening", "false");
@@ -59,7 +59,7 @@ test("stopping the microphone preserves speech and runs the search", async ({ pa
 test("Safari interim-only result is searchable and clearly marked for review", async ({ page }) => {
   await installVoice(page);
   await page.goto("/kasitteet");
-  await page.getByRole("button", { name: "Hae puhumalla" }).click();
+  await page.getByRole("button", { name: "Sano sana" }).click();
   await emitVoice(page, "audio");
   await emitVoice(page, "result", "Selitä oikofobia", 0, false);
   await page.getByRole("button", { name: "Lopeta ja hae", exact: true }).click();
@@ -73,7 +73,7 @@ test("Safari interim-only result is searchable and clearly marked for review", a
 test("explicit cancellation discards speech without changing the existing query", async ({ page }) => {
   await installVoice(page);
   await page.goto("/kasitteet?q=Ponzi");
-  await page.getByRole("button", { name: "Hae puhumalla" }).click();
+  await page.getByRole("button", { name: "Sano sana" }).click();
   await emitVoice(page, "audio");
   await emitVoice(page, "result", "oikofobia", 0, false);
   await page.getByRole("button", { name: "Peruuta puhehaku", exact: true }).click();
@@ -85,7 +85,7 @@ test("explicit cancellation discards speech without changing the existing query"
 test("Finnish and English lookup, details, related links and restored query", async ({ page }) => {
   await page.goto("/sanat");
   await page.getByRole("link", { name: "Käsitteet", exact: true }).click();
-  const search = page.getByRole("searchbox", { name: "Hae käsitteitä" });
+  const search = page.getByRole("searchbox", { name: "Hae sanoja ja käsitteitä" });
   for (const query of ["Overtonin ikkuna", "Overton window"]) {
     await search.fill(query);
     await expect(page.locator(".concept-row")).toHaveCount(1);
@@ -113,7 +113,7 @@ test("native denied microphone permission is reported without waiting for recogn
     return Boolean(host.SpeechRecognition || host.webkitSpeechRecognition);
   });
   test.skip(!supported, "This browser has no native speech recognition API.");
-  await page.getByRole("button", { name: "Hae puhumalla" }).click();
+  await page.getByRole("button", { name: "Sano sana" }).click();
   await expect(page.locator("#concept-voice-status")).toContainText("Mikrofonin käyttö estettiin");
   await expect(page.locator(".concept-mic")).toHaveAttribute("data-listening", "false");
   await page.getByRole("searchbox").fill("Ponzi");
@@ -163,7 +163,7 @@ test("full question and Finnish comparison including uncertainty", async ({ page
 test("voice transcript, capture states, fuzzy and weak-confidence suggestions", async ({ page }) => {
   await installVoice(page);
   await page.goto("/kasitteet");
-  await page.getByRole("button", { name: "Hae puhumalla" }).click();
+  await page.getByRole("button", { name: "Sano sana" }).click();
   await expect(page.locator("#concept-voice-status")).toContainText("Odotetaan mikrofonia");
   await expect(page.locator(".concept-mic")).toHaveAttribute("data-listening", "false");
   await emitVoice(page, "audio");
@@ -174,11 +174,11 @@ test("voice transcript, capture states, fuzzy and weak-confidence suggestions", 
   await emitVoice(page, "result", "Mikä on Ponzi-huijaus?");
   await expect(page.locator(".concept-transcript")).toContainText("Mikä on Ponzi-huijaus?");
   await expect(page.locator(".concept-row")).toContainText("Ponzi-huijaus");
-  await page.getByRole("button", { name: "Hae puhumalla" }).click();
+  await page.getByRole("button", { name: "Sano sana" }).click();
   await emitVoice(page, "result", "oikofopia");
   await expect(page.getByText("Tarkoititko: Oikofobia?", { exact: false })).toBeVisible();
   await expect(page).toHaveURL(/\/kasitteet\?/);
-  await page.getByRole("button", { name: "Hae puhumalla" }).click();
+  await page.getByRole("button", { name: "Sano sana" }).click();
   await emitVoice(page, "result", "Overton window", 0.3);
   await expect(page.getByText("Tarkoititko: Overtonin ikkuna?", { exact: false })).toBeVisible();
 });
@@ -186,11 +186,11 @@ test("voice transcript, capture states, fuzzy and weak-confidence suggestions", 
 test("voice comparison resets category and no concept is explained on no-match", async ({ page }) => {
   await installVoice(page);
   await page.goto("/kasitteet?category=games");
-  await page.getByRole("button", { name: "Hae puhumalla" }).click();
+  await page.getByRole("button", { name: "Sano sana" }).click();
   await emitVoice(page, "result", "Mikä ero on Ponzi-huijauksella ja pyramidihuijauksella?");
   await expect(page.getByRole("region", { name: "Käsitteiden vertailu" })).toBeVisible();
   await expect(page.getByLabel("Aihe", { exact: true })).toHaveValue("");
-  await page.getByRole("button", { name: "Hae puhumalla" }).click();
+  await page.getByRole("button", { name: "Sano sana" }).click();
   await emitVoice(page, "result", "kvanttikirahvi");
   await expect(page.locator("#concept-voice-status")).toContainText("käsitettä ei löytynyt");
   await expect(page.locator(".concept-row")).toHaveCount(0);
@@ -204,7 +204,7 @@ test("a spoken missing concept uses online search after recognition finishes", a
     await route.fulfill({ json: { query: { pages: [{ pageid: 13855, title: "Emergenssi", index: 1, extract: "Kokonaisuudesta syntyvä uusi ominaisuus." }] } } });
   });
   await page.goto("/kasitteet");
-  await page.getByRole("button", { name: "Hae puhumalla" }).click();
+  await page.getByRole("button", { name: "Sano sana" }).click();
   await emitVoice(page, "audio");
   await emitVoice(page, "result", "Mikä on emergenssi", 0, false);
   await expect(page.locator(".concept-online")).toHaveCount(0);
@@ -219,13 +219,13 @@ test("permission denial, missing hardware, no speech, network error and cancel r
   await installVoice(page);
   await page.goto("/kasitteet");
   for (const [error, message] of [["not-allowed", "Mikrofonin käyttö estettiin"], ["audio-capture", "Puhehaku ei ole käytettävissä"], ["no-speech", "Puhetta ei tunnistettu"], ["network", "Puhepalveluun ei saada yhteyttä"]]) {
-    await page.getByRole("button", { name: "Hae puhumalla" }).click();
+    await page.getByRole("button", { name: "Sano sana" }).click();
     await emitVoice(page, "audio");
     await emitVoice(page, "error", error);
     await expect(page.locator("#concept-voice-status")).toContainText(message);
     await expect(page.locator(".concept-mic")).toHaveAttribute("data-listening", "false");
   }
-  await page.getByRole("button", { name: "Hae puhumalla" }).click();
+  await page.getByRole("button", { name: "Sano sana" }).click();
   await emitVoice(page, "audio");
   await page.getByRole("button", { name: "Peruuta puhehaku" }).click();
   await expect(page.locator(".concept-mic")).toHaveAttribute("data-listening", "false");
@@ -239,7 +239,7 @@ test("unavailable browser API preserves typed search", async ({ page }) => {
     Object.defineProperty(window, "webkitSpeechRecognition", { value: undefined });
   });
   await page.goto("/kasitteet");
-  await page.getByRole("button", { name: "Hae puhumalla" }).click();
+  await page.getByRole("button", { name: "Sano sana" }).click();
   await expect(page.locator("#concept-voice-status")).toContainText("Puhehaku ei ole käytettävissä");
   await page.getByRole("searchbox").fill("confirmation bias");
   await expect(page.locator(".concept-row")).toContainText("Vahvistusharha");
@@ -248,7 +248,7 @@ test("unavailable browser API preserves typed search", async ({ page }) => {
 test("leaving the concepts browser cancels microphone capture", async ({ page }) => {
   await installVoice(page);
   await page.goto("/kasitteet");
-  await page.getByRole("button", { name: "Hae puhumalla" }).click();
+  await page.getByRole("button", { name: "Sano sana" }).click();
   await emitVoice(page, "audio");
   await page.getByRole("link", { name: "Sanat", exact: true }).click();
   await expect.poll(() => page.evaluate(() => (window as unknown as { testAborted: boolean }).testAborted)).toBe(true);

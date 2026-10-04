@@ -16,7 +16,7 @@ describe("LocalStorageSettingsRepository", () => {
 
   it("tallentaa ja palauttaa lukijan asetukset", () => {
     const repository = new LocalStorageSettingsRepository(localStorage);
-    const settings = { ...createDefaultSettings(), theme: "hiili" as const, motion: false };
+    const settings = { ...createDefaultSettings(), theme: "hiili" as const, motion: false, homePage: "kasitteet" as const };
 
     repository.save(settings);
 
@@ -26,7 +26,7 @@ describe("LocalStorageSettingsRepository", () => {
   it("korvaa tuntemattomat arvot oletuksilla", () => {
     localStorage.setItem(
       SETTINGS_STORAGE_KEY,
-      JSON.stringify({ schemaVersion: 1, theme: "neon", textSize: "suuri", motion: "kyllä" }),
+      JSON.stringify({ schemaVersion: 1, theme: "neon", textSize: "suuri", motion: "kyllä", homePage: "https://example.com" }),
     );
     const repository = new LocalStorageSettingsRepository(localStorage);
 

@@ -21,9 +21,10 @@ export interface UserFactState {
 }
 
 export interface PersistedUserState {
-  schemaVersion: 2;
+  schemaVersion: 3;
   words: Record<string, UserWordState>;
   facts: Record<string, UserFactState>;
+  savedConcepts: string[];
   feed: {
     currentWordId?: string;
     recentWordIds: string[];
@@ -35,9 +36,10 @@ export interface PersistedUserState {
 }
 
 export const createEmptyUserState = (): PersistedUserState => ({
-  schemaVersion: 2,
+  schemaVersion: 3,
   words: {},
   facts: {},
+  savedConcepts: [],
   feed: { recentWordIds: [] },
   factFeed: { recentFactIds: [] },
 });

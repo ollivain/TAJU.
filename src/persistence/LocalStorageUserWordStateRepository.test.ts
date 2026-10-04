@@ -56,7 +56,7 @@ describe("LocalStorageUserWordStateRepository", () => {
 
     const state = await new LocalStorageUserWordStateRepository(localStorage).load();
 
-    expect(state.schemaVersion).toBe(2);
+    expect(state.schemaVersion).toBe(3);
     expect(state.words["word-1"]).toMatchObject({
       wordId: "word-1",
       saved: true,
@@ -92,7 +92,7 @@ describe("LocalStorageUserWordStateRepository", () => {
   });
 
   it("ei ylikirjoita uudemman version käyttäjätilaa", async () => {
-    const future = JSON.stringify({ schemaVersion: 3, words: { future: true } });
+    const future = JSON.stringify({ schemaVersion: 4, words: { future: true } });
     localStorage.setItem(USER_STATE_STORAGE_KEY, future);
     const repository = new LocalStorageUserWordStateRepository(localStorage);
 
@@ -100,5 +100,17 @@ describe("LocalStorageUserWordStateRepository", () => {
     await expect(repository.save(createEmptyUserState())).rejects.toThrow("read-only");
 
     expect(localStorage.getItem(USER_STATE_STORAGE_KEY)).toBe(future);
+  });
+
+  it("migroi v2-edistymisen ja säilyttää uudet käsitekirjanmerkit", async () => {
+    const old = { ...createEmptyUserState(), schemaVersion: 2, savedConcepts: undefined };
+    old.facts["fact-1"] = { factId: "fact-1", saved: true, known: true, seenCount: 2, updatedAt: "2026-10-04" };
+    localStorage.setItem(USER_STATE_STORAGE_KEY, JSON.stringify(old));
+    const repository = new LocalStorageUserWordStateRepository(localStorage);
+    const migrated = await repository.load();
+    expect(migrated.facts).toEqual(old.facts);
+    expect(migrated.savedConcepts).toEqual([]);
+    await repository.save({ ...migrated, savedConcepts: ["oikofobia"] });
+    expect((await repository.load()).savedConcepts).toEqual(["oikofobia"]);
   });
 });

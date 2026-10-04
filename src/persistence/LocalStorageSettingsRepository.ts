@@ -19,6 +19,7 @@ export const migrateSettings = (value: unknown): AppSettings => {
 
   return {
     schemaVersion: 1,
+    homePage: value.homePage === "kasitteet" ? "kasitteet" : defaults.homePage,
     theme: isThemeId(value.theme) ? value.theme : defaults.theme,
     textSize: isTextSizeId(value.textSize) ? value.textSize : defaults.textSize,
     motion: typeof value.motion === "boolean" ? value.motion : defaults.motion,

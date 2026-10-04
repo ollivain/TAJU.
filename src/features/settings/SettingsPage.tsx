@@ -49,6 +49,12 @@ export function SettingsPage() {
             <h2 className="settings-heading">Nopea puhehaku</h2>
             <p className="settings-help">Sanele kuulemasi sana iPhonen Toimintopainikkeella ja avaa sen selitys TAJUssa.</p>
             <Link className="text-button text-button--accent settings-start" to="/pikakomento">Ota iPhonen pikakomento käyttöön</Link>
+            <details className="concept-voice-info settings-help">
+              <summary>Tietoa puhehausta</summary>
+              <p>Paina hakukentän mikrofonia ja sano sana tai kysymys. Lopeta kuuntelu samasta painikkeesta. Voit myös sanella hakukenttään iPhonen näppäimistön mikrofonilla.</p>
+              <p>Selaimesi voi lähettää äänen puhepalveluunsa tunnistettavaksi. Puhehaku voi tarvita verkkoyhteyden. TAJU ei tallenna ääntä. iPhonen Safari voi tarvita myös Sirin ja puheentunnistuksen sallimisen.</p>
+              <p>Kuuntele selitys -painike lukee vastauksen ääneen. Pikakomennosta avaaminen ei käynnistä ääntä automaattisesti.</p>
+            </details>
           </section>
 
           <Squiggle className="settings-rule" weight={1} opacity={0.34} />

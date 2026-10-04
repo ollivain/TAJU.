@@ -62,11 +62,11 @@ test("older installed PWA starts at the selected home without starting the micro
   page.on("pageerror", (error) => errors.push(error.message));
   await page.goto("/sanat");
   await expect(page).toHaveURL(/\/kasitteet$/);
-  await expect(page.locator("#concept-voice-status")).toContainText("Sano sana");
+  await expect(page.locator("#concept-voice-status")).toBeEmpty();
   await page.getByRole("navigation").getByRole("link", { name: "Sanat", exact: true }).click();
   await expect(page.getByRole("button", { name: "Seuraava" })).toBeVisible();
   await page.getByRole("link", { name: "Käsitteet", exact: true }).click();
-  await expect(page.locator("#concept-voice-status")).toContainText("Sano sana");
+  await expect(page.locator("#concept-voice-status")).toBeEmpty();
   expect(errors).toEqual([]);
 });
 
@@ -85,8 +85,11 @@ test("shortcut accepts encoded Finnish questions and shows the word definition a
 
 test("word and concept bookmarks persist and can be revisited from the same search page", async ({ page }) => {
   await page.goto("/hae?q=paradoksi");
+  // Wait for the display font before tapping below the large answer heading.
+  await page.evaluate(() => document.fonts.ready.then(() => undefined));
   const answer = page.getByRole("article", { name: "Nopea selitys" });
   await answer.getByRole("button", { name: "Tallenna myöhemmäksi" }).click();
+  await expect(answer.getByRole("button", { name: "Tallennettu" })).toHaveAttribute("aria-pressed", "true");
   await page.reload();
   await expect(answer.getByRole("button", { name: "Tallennettu" })).toHaveAttribute("aria-pressed", "true");
   await answer.getByRole("link").click();
@@ -95,6 +98,7 @@ test("word and concept bookmarks persist and can be revisited from the same sear
   await expect(page.getByRole("searchbox")).toHaveValue("paradoksi");
   await page.getByRole("searchbox").fill("oikofobia");
   await answer.getByRole("button", { name: "Tallenna myöhemmäksi" }).click();
+  await expect(answer.getByRole("button", { name: "Tallennettu" })).toHaveAttribute("aria-pressed", "true");
   await page.reload();
   await expect(answer.getByRole("button", { name: "Tallennettu" })).toHaveAttribute("aria-pressed", "true");
   await page.getByRole("searchbox").fill("");
@@ -125,6 +129,27 @@ test("shortcut guide exposes a valid query prefix and working example", async ({
   await expect(page.locator(".quick-answer")).toContainText("Paradoksi");
 });
 
+test("lookup keeps the answer first and moves speech help to settings", async ({ page }) => {
+  await page.goto("/hae?q=demokraatti");
+  const answer = page.getByRole("article", { name: "Nopea selitys" });
+  const heading = answer.getByRole("heading", { name: "Demokraatti", exact: true });
+  await expect(heading).toBeInViewport();
+  await expect(answer.getByRole("button", { name: "Kuuntele selitys" })).toBeInViewport();
+  await expect(page.getByLabel("Aihe", { exact: true })).not.toBeVisible();
+  await expect(page.getByText("Tietoa puhehausta", { exact: true })).toHaveCount(0);
+  await expect(page.getByRole("link", { name: /Toimintopainikkeella/ })).toHaveCount(0);
+  await expect(page.locator(".concept-result-rule")).toHaveCount(0);
+  await page.getByText("Selaa ja vertaa", { exact: true }).click();
+  await page.getByLabel("Aihe", { exact: true }).selectOption("games");
+  await expect(answer).toHaveCount(0);
+  await page.getByLabel("Aihe", { exact: true }).selectOption("");
+  await expect(answer).toBeVisible();
+  await page.getByRole("link", { name: "Asetukset", exact: true }).click();
+  await page.getByText("Tietoa puhehausta", { exact: true }).click();
+  await expect(page.getByText(/TAJU ei tallenna ääntä/)).toBeVisible();
+  await expect(page.getByRole("link", { name: "Ota iPhonen pikakomento käyttöön" })).toBeVisible();
+});
+
 test("quick lookup fits mobile and desktop with large type and dark theme", async ({ page }, testInfo) => {
   await page.goto("/asetukset");
   await page.getByRole("button", { name: "Hiili", exact: true }).click();
@@ -133,7 +158,13 @@ test("quick lookup fits mobile and desktop with large type and dark theme", asyn
   for (const width of [320, 393, 1280]) {
     await page.setViewportSize({ width, height: 852 });
     const button = await page.getByRole("button", { name: "Sano sana" }).boundingBox();
+    const input = await page.getByRole("searchbox").boundingBox();
+    const field = await page.locator(".concept-search").boundingBox();
     expect(button!.height).toBeGreaterThanOrEqual(44);
+    expect(button!.width).toBeGreaterThanOrEqual(44);
+    expect(button!.x).toBeGreaterThanOrEqual(input!.x + input!.width);
+    expect(button!.y).toBeGreaterThanOrEqual(field!.y);
+    expect(button!.y + button!.height).toBeLessThanOrEqual(field!.y + field!.height);
     expect(button!.x + button!.width).toBeLessThanOrEqual(width);
     expect(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth)).toBe(false);
   }
@@ -250,5 +281,5 @@ test("missing disambiguation extracts do not produce a made-up spoken explanatio
   await expect(result).toContainText("Merkitysten kuvauksia ei saatu");
   await expect(result.getByRole("button", { name: "Kuuntele selitys" })).toHaveCount(0);
   expect((await speechState(page)).calls).toEqual([]);
-  await expect(result.getByRole("link")).toHaveAttribute("href", "https://fi.wikipedia.org/?curid=456");
+  await expect(page.locator(".concept-answer-title").getByRole("link")).toHaveAttribute("href", "https://fi.wikipedia.org/?curid=456");
 });

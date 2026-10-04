@@ -130,7 +130,7 @@ test("categories, no result recovery, pagination and deep-link reload", async ({
   await page.getByLabel("Aihe", { exact: true }).selectOption("games");
   await expect(page.locator(".concept-row")).toHaveCount(concepts.filter((concept) => concept.category === "games").length);
   await page.getByRole("searchbox").fill("tuntematon asia");
-  await expect(page.getByText(/Ei hakutuloksia/)).toBeVisible();
+  await expect(page.getByText(/Wikipediasta ei löytynyt osumaa/)).toBeVisible();
   await page.getByRole("button", { name: "Näytä kaikki käsitteet" }).click();
   await expect(page.getByLabel("Aihe", { exact: true })).toHaveValue("");
   await page.goto("/kasitteet/oikofobia");

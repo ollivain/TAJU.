@@ -37,6 +37,7 @@ export function OnlineConceptFallback({ term }: { term: string }) {
   }, [term, attempt, online]);
 
   const results = online && state.status === "done" ? state.results : [];
+  const directResult = results.length === 1 && results[0].match !== "related" ? results[0] : undefined;
   const message = !online ? "Verkkohaku tarvitsee internetyhteyden. TAJUn omat käsitteet toimivat myös offline-tilassa."
     : state.status === "waiting" || state.status === "loading" ? "Etsitään Wikipediasta…"
       : state.status === "error" ? "Verkkohaku ei onnistunut. Kokeile uudelleen tai jatka Googleen."
@@ -47,11 +48,13 @@ export function OnlineConceptFallback({ term }: { term: string }) {
 
   return (
     <section className="concept-online" aria-label={`Verkosta: ${term}`}>
-      <h2 className="settings-heading">Verkosta: {term}</h2>
-      <p className="concept-online__status" role="status">{message}</p>
+      <h2 className="display-heading concept-answer-title">{directResult
+        ? <a href={directResult.url} target="_blank" rel="noreferrer"><span lang={directResult.language}>{directResult.redirectedFrom ?? directResult.title}</span><ArrowUpRight size={20} aria-hidden="true" /><span className="sr-only"> (avautuu uuteen välilehteen)</span></a>
+        : term}</h2>
+      <p className={directResult && !directResult.disambiguation ? "sr-only" : "concept-online__status"} role="status">{message}</p>
       {results.map((result) => <article className="concept-online__result" key={`${result.language}:${result.id}`}>
         <p className="concept-meta">Wikipedia · {result.language === "fi" ? "Suomi" : "Englanti"}</p>
-        <h3><a href={result.url} target="_blank" rel="noreferrer"><span lang={result.language}>{result.redirectedFrom ?? result.title}</span><ArrowUpRight size={18} aria-hidden="true" /><span className="sr-only"> (avautuu uuteen välilehteen)</span></a></h3>
+        {!directResult && <h3><a href={result.url} target="_blank" rel="noreferrer"><span lang={result.language}>{result.redirectedFrom ?? result.title}</span><ArrowUpRight size={18} aria-hidden="true" /><span className="sr-only"> (avautuu uuteen välilehteen)</span></a></h3>}
         {result.redirectedFrom && <p className="concept-meta">Wikipedian ohjaus · Lähdeartikkeli: {result.title}</p>}
         {result.section ? <p>Käsite löytyy lähdeartikkelin osiosta ”{result.section.replaceAll("_", " ")}”. Avaa lähde lukeaksesi sen.</p>
           : result.disambiguation ? <>

@@ -20,7 +20,7 @@ export function LookupResult({ entry, quick = false, returnSearch = "" }: { entr
   return <article className={quick ? "quick-answer" : "lookup-result"} aria-label={quick ? "Nopea selitys" : undefined}>
     <Link className={`word-row ${entry.type === "concept" ? "concept-row" : "lookup-word-row"}`} to={path} state={{ returnSearch, fromLookup: true }}>
       <div className="concept-row__body">
-        {quick ? <h2 className="word-row__word">{lookupName(entry)}</h2> : <span className="word-row__word">{lookupName(entry)}</span>}
+        {quick ? <h2 className="display-heading word-row__word">{lookupName(entry)}</h2> : <span className="word-row__word">{lookupName(entry)}</span>}
         <span className="concept-row__definition">{item.shortDefinition}</span>
         <span className="concept-meta">{quick ? "Lue lisää" : entry.type === "concept" ? "Käsite" : "Sana"}</span>
       </div>

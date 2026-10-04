@@ -155,3 +155,11 @@ Wikipedian täsmennyssivumerkintä ei enää piilota lähteen palauttamaa teksti
 Demokraatti lisättiin paikalliseen aineistoon: kansanvallan kannattaja, puoluepoliittinen käyttö ja lehden nimi erotetaan toisistaan. Lähteet ja podcast-esimerkki ovat käsitesivulla. Sisältöversio on 2026.10.4. Pikakomento-ohje sanoo nyt selvästi, että haku avautuu heti mutta ääni alkaa Kuuntele selitys -napautuksesta. Käyttäjä vahvisti äänen toimivan painikkeesta iPhonellaan; automaattista toistoa ei luvata.
 
 Tarkistus: 124 yksikkötestiä ja 66 selaintestiä (51 Chromium, 15 WebKit), TypeScript, ESLint, sisältövalidointi ja build läpäisty. Uudet regressiot tarkistavat paikallisen demokraatti-selityksen, täsmennyssivun koko katkelman näyttämisen ja ääneenluvun sekä puuttuvan katkelman käsittelyn. Demokraatin alkuperäinen Wikipedia-rajapintavastaus tarkistettiin myös verkosta: merkitykset olivat jo vastauksessa, mutta aiempi käyttöliittymä piilotti ne.
+
+### Selitys etusijalla (0.5.3)
+
+Käsitehaun mikrofoni on hakukentän oikeassa reunassa. Haun aikana sivun yleisotsikko väistyy ja löydetty sana näytetään suurena otsikkona, myös Wikipedian täsmällisissä osumissa. Selitys ja kuuntelu tulevat ennen selaamisen toimintoja. Aihevalinta ja vertailu löytyvät avattavasta Selaa ja vertaa -osiosta; käytössä oleva aiherajaus jää näkyviin. Yksittäisen vastauksen alla ei näytetä turhaa osumalaskuria eikä verkkotuloksen alla toista tyhjän haun ilmoitusta.
+
+Puhehaun ohjeet ja iPhonen pikakomento löytyvät asetusten Nopea puhehaku -osiosta. Kuuntelun tila, virheet ja kuultu teksti näkyvät edelleen haun yhteydessä. Mikrofonin ja kuuntelun toiminta säilyy käyttäjän käynnistämänä.
+
+Tarkistus: 124 yksikkötestiä ja 68 selaintestiä (52 Chromium, 16 WebKit), ESLint, TypeScript, sisältövalidointi ja build. Asettelua tarkistetaan 320–1280 pikselin leveyksillä, myös suurella tekstillä ja tummalla teemalla. Uudet tarkistukset kattavat vastauksen näkyvyyden, mikrofonin sijainnin ja kosketusalueen sekä ohjeiden löytymisen asetuksista.

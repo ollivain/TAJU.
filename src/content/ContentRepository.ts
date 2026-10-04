@@ -4,8 +4,13 @@ import type {
   FactEntry,
   WordEntry,
 } from "../domain/content/types";
+import type { Concept, ConceptCategory } from "../domain/concepts/schema";
 
 export interface ContentCatalog {
+  concepts: Concept[];
+  conceptCategories: ConceptCategory[];
+  conceptsById: ReadonlyMap<string, Concept>;
+  conceptsBySlug: ReadonlyMap<string, Concept>;
   manifest: ContentManifest;
   words: WordEntry[];
   facts: FactEntry[];
@@ -17,6 +22,8 @@ export interface ContentCatalog {
 }
 
 export interface ContentRepository {
+  getConceptById(id: string): Concept | undefined;
+  getConceptBySlug(slug: string): Concept | undefined;
   loadCatalog(): Promise<ContentCatalog>;
   getWordById(id: string): WordEntry | undefined;
   getWordBySlug(slug: string): WordEntry | undefined;

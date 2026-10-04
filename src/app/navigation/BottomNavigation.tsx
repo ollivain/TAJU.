@@ -5,6 +5,7 @@ const items = [
   { to: "/sanat", label: "Sanat" },
   { to: "/loyda", label: "Löydä" },
   { to: "/tieda", label: "Tiedä" },
+  { to: "/kasitteet", label: "Käsitteet" },
   { to: "/asetukset", label: "Asetukset" },
 ];
 

@@ -1,0 +1,9 @@
+[
+  { "id": "society", "label": "Yhteiskunta ja politiikka" },
+  { "id": "economics", "label": "Talous ja sijoittaminen" },
+  { "id": "psychology", "label": "Psykologia ja ajattelun vinoumat" },
+  { "id": "argumentation", "label": "Argumentointi ja retoriikka" },
+  { "id": "decisions", "label": "Filosofia ja päätöksenteko" },
+  { "id": "games", "label": "Peliteoria" },
+  { "id": "media", "label": "Internet ja media" }
+]

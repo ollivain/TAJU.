@@ -1,0 +1,411 @@
+[
+  {
+    "id": "overton-window", "slug": "overtonin-ikkuna", "name": "Overtonin ikkuna", "englishName": "Overton window",
+    "shortDefinition": "Malli siitä, millaisia poliittisia ehdotuksia pidetään tiettynä aikana hyväksyttävinä.",
+    "explanation": "Julkisen keskustelun rajat muuttuvat arvojen, tapahtumien ja vaikuttamisen mukana. Ikkuna kuvaa poliittista hyväksyttävyyttä, ei ehdotuksen totuutta tai hyvyyttä.",
+    "simpleExplanation": "Ajatus, jota tänään pidetään mahdottomana, voi myöhemmin olla tavallinen ehdotus.",
+    "example": "Aiemmin poikkeuksellinen ehdotus nelipäiväisestä työviikosta voi siirtyä vakavasti harkittavien vaihtoehtojen joukkoon.",
+    "category": "society", "tags": ["politiikka", "keskustelu"], "aliases": ["Overton-ikkuna"], "searchKeywords": ["hyväksyttävyys", "julkinen mielipide"], "relatedConceptIds": ["polarization", "moral-panic"],
+    "nuanceNote": "Ikkuna on havainnollistava malli. Sen rajoista ei ole yhtä objektiivista mittaa, ja eri yleisöillä voi olla erilaiset rajat.",
+    "sources": [{ "label": "Mackinac Center: The Overton Window (mallin kehittäjä)", "url": "https://www.mackinac.org/OvertonWindow" }]
+  },
+  {
+    "id": "ponzi", "slug": "ponzi-huijaus", "name": "Ponzi-huijaus", "englishName": "Ponzi scheme",
+    "shortDefinition": "Sijoitushuijaus, jossa aiempien sijoittajien tuotot maksetaan uusien sijoittajien rahoista.",
+    "explanation": "Järjestäjä esittää maksut sijoitustoiminnan tuottoina, vaikka rahat tulevat uusista sijoituksista. Järjestelmä ei pysy koossa ilman jatkuvaa rahavirtaa.",
+    "simpleExplanation": "Vanhalle sijoittajalle maksetaan uuden sijoittajan rahoilla ja väitetään, että sijoitus tuotti voittoa.",
+    "example": "Rahasto lupaa tasaisen suuren tuoton, mutta maksaa nostot seuraavien asiakkaiden talletuksista.",
+    "category": "economics", "tags": ["huijaukset", "sijoittaminen"], "aliases": ["Ponzi", "ponzi scheme"], "searchKeywords": ["sijoitushuijaus"], "relatedConceptIds": ["pyramid", "pump-dump"],
+    "comparison": { "mechanism": "Sijoitustuottojen teeskentely.", "moneySource": "Uusien sijoittajien sijoitukset.", "participantStructure": "Järjestäjä hallitsee varoja; sijoittajan ei yleensä tarvitse värvätä muita.", "distinctiveFeature": "Huijaus perustuu luvattuun sijoitustuottoon, ei ensisijaisesti osallistujien värväyspalkkioihin." },
+    "sources": [{ "label": "SEC / Investor.gov: Ponzi Scheme", "url": "https://www.investor.gov/protect-your-investments/fraud/types-fraud/ponzi-scheme" }]
+  },
+  {
+    "id": "oikophobia", "slug": "oikofobia", "name": "Oikofobia", "englishName": "Oikophobia",
+    "shortDefinition": "Kontekstista riippuva sana, joka voi tarkoittaa kotiympäristön pelkoa tai oman kulttuurin torjuntaa.",
+    "explanation": "Sanaa on käytetty kotiin liittyvästä pelosta. Poliittisessa kirjoittelussa sillä kuvataan kielteistä suhtautumista omaan kulttuuriin tai yhteiskuntaan. Nämä käyttötavat on erotettava toisistaan.",
+    "simpleExplanation": "Sama sana voi puhua kodin pelosta tai olla poliittinen arvio jonkun kulttuurisuhteesta.",
+    "example": "Kirjoittaja kutsuu kansallisten perinteiden arvostelua oikofobiaksi. Nimitys kertoo hänen tulkinnastaan, ei todista arvostelijan motiivia.",
+    "category": "society", "tags": ["kulttuuri", "kielenkäyttö"], "aliases": ["oikophobia", "oiko fobia"], "searchKeywords": ["kotipelko", "oman kulttuurin torjunta"], "relatedConceptIds": ["polarization", "ad-hominem"],
+    "nuanceNote": "Poliittinen käyttö on arvolatautunutta ja kiistanalaista. Oman yhteiskunnan kritiikki ei sellaisenaan osoita vihaa tai pelkoa, eikä poliittinen nimitys ole kliininen diagnoosi."
+  },
+  {
+    "id": "astroturfing", "slug": "astroturffaus", "name": "Astroturffaus", "englishName": "Astroturfing",
+    "shortDefinition": "Organisoitu vaikuttaminen, joka esitetään riippumattomana kansalaisten aloitteena.",
+    "explanation": "Taustalla oleva rahoittaja tai koordinoija peitetään, jotta kampanja näyttäisi spontaanilta ruohonjuuritason toiminnalta. Pelkkä järjestäytyminen ei vielä ole astroturffausta.",
+    "simpleExplanation": "Mainoskampanja pukeutuu tavallisten ihmisten yhteiseksi mielipiteeksi.",
+    "example": "Yritys rahoittaa salaa paikalliselta kansanliikkeeltä näyttävää kampanjaa oman hankkeensa puolesta.",
+    "category": "media", "tags": ["vaikuttaminen", "läpinäkyvyys"], "aliases": ["astroturfing", "astroturf"], "searchKeywords": ["ruohonjuuriliike", "peitelty kampanja"], "relatedConceptIds": ["dog-whistle", "regulatory-capture"]
+  },
+  {
+    "id": "moral-panic", "slug": "moraalipaniikki", "name": "Moraalipaniikki", "englishName": "Moral panic",
+    "shortDefinition": "Voimakas yhteiskunnallinen huoliaalto, jossa ilmiö tai ryhmä esitetään uhkana yhteisön arvoille.",
+    "explanation": "Käsite tarkastelee uhkakuvien, median, yleisön ja vallankäytön vuorovaikutusta. Usein sillä viitataan uhkaan nähden ylimitoitettuun reaktioon, mutta mittasuhteiden arviointi vaatii näyttöä.",
+    "simpleExplanation": "Yhdestä ilmiöstä voi kasvaa pelko siitä, että koko yhteiskunta on vaarassa.",
+    "example": "Yksittäisistä nuorten häiriöistä syntyy väite, että kokonainen harrastus turmelee nuorison.",
+    "category": "society", "tags": ["media", "uhkakuvat"], "aliases": [], "searchKeywords": ["joukkohuoli", "pelko"], "relatedConceptIds": ["availability-bias", "overton-window"],
+    "nuanceNote": "Huolen kutsuminen moraalipaniikiksi ei osoita, ettei taustalla olisi todellista ongelmaa. Myös reaktion suhteettomuus on perusteltava."
+  },
+  {
+    "id": "regulatory-capture", "slug": "saantelykaappaus", "name": "Sääntelykaappaus", "englishName": "Regulatory capture",
+    "shortDefinition": "Tilanne, jossa sääntelijä alkaa palvella valvomansa alan etuja yleisen edun kustannuksella.",
+    "explanation": "Riippuvuus alan tiedosta, urakierrosta tai poliittisesta vaikutusvallasta voi ohjata valvontaa. Ilmiö ei edellytä lahjontaa tai tietoista sopimusta.",
+    "simpleExplanation": "Valvoja alkaa katsoa asiaa ennen kaikkea valvottavan silmin.",
+    "example": "Lupaehto laaditaan niin, että suuret nykyiset yritykset täyttävät sen helposti mutta uudet kilpailijat eivät.",
+    "category": "society", "tags": ["sääntely", "instituutiot"], "aliases": ["regulaatiokaappaus"], "searchKeywords": ["viranomaiskaappaus", "lobbaus"], "relatedConceptIds": ["rent-seeking", "principal-agent"]
+  },
+  {
+    "id": "rent-seeking", "slug": "rent-seeking", "name": "Erityisetujen tavoittelu", "englishName": "Rent-seeking",
+    "shortDefinition": "Hyödyn tavoittelu pelisääntöihin tai etuoikeuksiin vaikuttamalla uuden arvon tuottamisen sijaan.",
+    "explanation": "Taloustieteen rent tarkoittaa esimerkiksi niukasta etuoikeudesta saatavaa ylimääräistä tuottoa. Etujen tavoittelu voi käyttää resursseja ilman, että kokonaistuotanto kasvaa.",
+    "simpleExplanation": "Yritys yrittää saada itselleen suojatun aseman sen sijaan, että parantaisi tuotettaan.",
+    "example": "Yritys lobbaa kilpailijan tuotteelle tuontirajoitusta voidakseen pitää omat hintansa korkeina.",
+    "category": "economics", "tags": ["kannustimet", "kilpailu"], "aliases": ["rent seeking", "rentin tavoittelu"], "searchKeywords": ["etuoikeus", "taloudellinen rentti"], "relatedConceptIds": ["regulatory-capture", "zero-sum"]
+  },
+  {
+    "id": "dog-whistle", "slug": "koirapilli", "name": "Koirapilli", "englishName": "Dog whistle",
+    "shortDefinition": "Viesti, jolla on tietylle yleisölle erityinen merkitys mutta muille viattomampi tai yleisempi tulkinta.",
+    "explanation": "Koodattu ilmaus voi viestiä ryhmän jäsenyydestä tai näkemyksestä ilman, että asia sanotaan suoraan. Merkitys riippuu puhujasta, yleisöstä ja käyttötilanteesta.",
+    "simpleExplanation": "Osa kuulijoista kuulee lauseessa viestin, jota muut eivät tunnista.",
+    "example": "Kampanjan tunnuslause sisältää ilmauksen, joka viittaa kannattajapiirissä tunnettuun mutta julkisesti selittämättömään tavoitteeseen.",
+    "category": "argumentation", "tags": ["viestintä", "konteksti"], "aliases": ["koirapillipolitiikka", "dogwhistle"], "searchKeywords": ["koodattu viesti"], "relatedConceptIds": ["astroturfing", "motte-bailey"],
+    "nuanceNote": "Tulkinta piiloviestistä vaatii kontekstia ja näyttöä. Pelkkä sanavalinta ei aina osoita puhujan tarkoitusta."
+  },
+  {
+    "id": "polarization", "slug": "polarisaatio", "name": "Polarisaatio", "englishName": "Polarization",
+    "shortDefinition": "Mielipiteiden tai ryhmien eriytyminen kauemmas toisistaan.",
+    "explanation": "Asiapolarisaatiossa näkemykset erkanevat. Tunnepolarisaatiossa kielteisyys toista ryhmää kohtaan kasvaa, vaikka asiakysymysten erot eivät kasvaisi yhtä paljon.",
+    "simpleExplanation": "Ihmiset jakautuvat leireihin, joiden on yhä vaikeampi ymmärtää toisiaan.",
+    "example": "Kaksi ryhmää alkaa epäillä toistensa motiiveja silloinkin, kun ne kannattavat samaa käytännön ratkaisua.",
+    "category": "society", "tags": ["ryhmät", "mielipiteet"], "aliases": ["polarisoituminen", "kahtiajakautuminen"], "searchKeywords": ["vastakkainasettelu"], "relatedConceptIds": ["confirmation-bias", "populism"]
+  },
+  {
+    "id": "populism", "slug": "populismi", "name": "Populismi", "englishName": "Populism",
+    "shortDefinition": "Poliittinen ajattelutapa, jossa kansa asetetaan vastakkain sitä huonosti edustavan eliitin kanssa.",
+    "explanation": "Monissa tutkimusmääritelmissä politiikan katsotaan toteuttavan yhtenäisen kansan tahtoa. Populismia esiintyy eri ideologioissa, eikä se tarkoita vain suosittuja lupauksia.",
+    "simpleExplanation": "Viestin ytimessä on ajatus: me edustamme oikeaa kansaa, eliitti ei.",
+    "example": "Liike esittää itsensä koko kansan ainoana aitona äänenä ja vastustajansa kansan tahdon esteenä.",
+    "category": "society", "tags": ["politiikka", "edustus"], "aliases": [], "searchKeywords": ["kansa", "eliitti"], "relatedConceptIds": ["technocracy", "polarization"],
+    "nuanceNote": "Populismille on useita tutkimusmääritelmiä. Arkikielessä sanaa käytetään myös väljänä moitteena, joten käyttötapa on hyvä täsmentää."
+  },
+  {
+    "id": "technocracy", "slug": "teknokratia", "name": "Teknokratia", "englishName": "Technocracy",
+    "shortDefinition": "Hallintotapa tai ihanne, joka painottaa asiantuntijoiden ja teknisen tiedon valtaa päätöksenteossa.",
+    "explanation": "Asiantuntijat voivat arvioida keinojen vaikutuksia, mutta tavoitteiden ja hyväksyttävien haittojen valinta sisältää myös arvoja. Teknokraattisia piirteitä voi olla monenlaisissa järjestelmissä.",
+    "simpleExplanation": "Päätöksissä annetaan paljon valtaa alan asiantuntijoille.",
+    "example": "Liikennesuunnitelma valitaan lähinnä asiantuntijamallin tehokkuuslaskelman perusteella.",
+    "category": "society", "tags": ["asiantuntijat", "hallinto"], "aliases": [], "searchKeywords": ["asiantuntijavalta"], "relatedConceptIds": ["populism", "goodhart"]
+  },
+  {
+    "id": "path-dependence", "slug": "polkuriippuvuus", "name": "Polkuriippuvuus", "englishName": "Path dependence",
+    "shortDefinition": "Aiemmat valinnat rajaavat sitä, mitkä myöhemmät vaihtoehdot ovat helppoja tai kannattavia.",
+    "explanation": "Osaaminen, infrastruktuuri ja yhteensopivuus voivat vahvistaa jo valittua ratkaisua. Nykyinen käytäntö voi siksi säilyä, vaikka tyhjästä aloittava valitsisi toisin.",
+    "simpleExplanation": "Kuljettu reitti vaikuttaa siihen, minne on helppo mennä seuraavaksi.",
+    "example": "Yritys jatkaa vanhan ohjelmiston käyttöä, koska kaikki muut järjestelmät on rakennettu sen ympärille.",
+    "category": "decisions", "tags": ["historia", "valinnat"], "aliases": [], "searchKeywords": ["lukkiutuminen", "vaihtokustannus"], "relatedConceptIds": ["network-effect", "sunk-cost"]
+  },
+  {
+    "id": "pyramid", "slug": "pyramidihuijaus", "name": "Pyramidihuijaus", "englishName": "Pyramid scheme",
+    "shortDefinition": "Järjestelmä, jossa ansainta perustuu ensisijaisesti uusien maksavien osallistujien värväämiseen.",
+    "explanation": "Liittymismaksuja siirtyy ylemmille tasoille. Osallistujamäärän pitäisi kasvaa jatkuvasti, joten alimmille tasoille jäävät eivät yleensä saa lupausten mukaisia tuottoja.",
+    "simpleExplanation": "Maksat päästäksesi mukaan ja saat rahaa, jos tuot lisää maksajia ketjuun.",
+    "example": "Osallistuja maksaa liittymismaksun ja saa palkkion jokaisesta värväämästään uudesta jäsenestä.",
+    "category": "economics", "tags": ["huijaukset", "värväys"], "aliases": ["pyramidipeli", "pyramidi huijaus"], "searchKeywords": ["verkostohuijaus"], "relatedConceptIds": ["ponzi", "pump-dump"],
+    "comparison": { "mechanism": "Palkkiot uusien jäsenten värväämisestä.", "moneySource": "Uusien osallistujien maksut tai pakolliset ostot.", "participantStructure": "Värvääjät ja heidän alapuolelleen liittyvät jäsenet muodostavat tasoja.", "distinctiveFeature": "Osallistujien oma värväys on keskeinen ansaintamekanismi; tuote ei yksin tee mallista kestävää." },
+    "sources": [{ "label": "SEC / Investor.gov: Pyramid Schemes", "url": "https://www.investor.gov/protect-your-investments/fraud/types-fraud/pyramid-schemes" }]
+  },
+  {
+    "id": "pump-dump", "slug": "pump-and-dump", "name": "Pump and dump", "englishName": "Pump and dump",
+    "shortDefinition": "Hinnan manipulointi, jossa kohdetta hypetetään ja omat omistukset myydään hinnan noustua.",
+    "explanation": "Harhaanjohtava markkinointi houkuttelee ostajia ja nostaa hintaa. Kampanjan järjestäjät hyödyntävät nousun myymällä, jolloin myöhemmät ostajat voivat jäädä tappioille.",
+    "simpleExplanation": "Nostata innostus, myy omasi kalliilla ja jätä muut kantamaan riski.",
+    "example": "Ryhmä levittää perättömiä lupauksia vähän vaihdetusta osakkeesta ja myy omat osakkeensa ostoryntäykseen.",
+    "category": "economics", "tags": ["markkinat", "huijaukset"], "aliases": ["pumppaus ja dumppaus"], "searchKeywords": ["kurssimanipulaatio"], "relatedConceptIds": ["short-squeeze", "ponzi"]
+  },
+  {
+    "id": "moral-hazard", "slug": "moraalikato", "name": "Moraalikato", "englishName": "Moral hazard",
+    "shortDefinition": "Riskinotto voi lisääntyä, kun joku muu kantaa osan valinnan seurauksista.",
+    "explanation": "Suoja tappioilta muuttaa kannustimia sopimuksen tekemisen jälkeen. Kyse on taloudellisesta kannustinongelmasta, ei automaattisesti henkilön moraalisesta puutteesta.",
+    "simpleExplanation": "Varovaisuus voi vähentyä, jos lasku menee toiselle.",
+    "example": "Yritys ottaa suurempia riskejä, koska se odottaa muiden kattavan mahdolliset tappiot.",
+    "category": "economics", "tags": ["riskit", "kannustimet"], "aliases": ["moraalinen riski"], "searchKeywords": ["vakuutus", "pelastuspaketti"], "relatedConceptIds": ["adverse-selection", "principal-agent"]
+  },
+  {
+    "id": "adverse-selection", "slug": "haitallinen-valikoituminen", "name": "Haitallinen valikoituminen", "englishName": "Adverse selection",
+    "shortDefinition": "Tiedon epätasainen jakautuminen ohjaa sopimuksiin tai markkinoille epäedullisen osallistujajoukon.",
+    "explanation": "Osapuoli tuntee esimerkiksi oman riskinsä tai tuotteensa laadun paremmin kuin toinen. Yhteinen hinta voi houkutella korkean riskin osallistujia ja karkottaa matalan riskin osallistujia.",
+    "simpleExplanation": "Kun laatua ei voi erottaa, hyvät vaihtoehdot voivat kadota joukosta.",
+    "example": "Ostaja ei tunnista hyviä käytettyjä laitteita ja tarjoaa kaikista matalan hinnan. Hyvien laitteiden myyjät vetäytyvät.",
+    "category": "economics", "tags": ["informaatio", "markkinat"], "aliases": ["käänteinen valikoituminen"], "searchKeywords": ["epäsymmetrinen tieto"], "relatedConceptIds": ["moral-hazard", "principal-agent"]
+  },
+  {
+    "id": "principal-agent", "slug": "paamies-agenttiongelma", "name": "Päämies–agenttiongelma", "englishName": "Principal-agent problem",
+    "shortDefinition": "Toisen puolesta toimivan edut tai tiedot eivät täysin vastaa toimeksiantajan etuja tai tietoja.",
+    "explanation": "Päämies delegoi tehtävän agentille mutta ei pysty seuraamaan kaikkea tämän toimintaa. Sopimukset, valvonta ja palkkiot voivat vähentää eturistiriitaa mutta myös luoda uusia kannustimia.",
+    "simpleExplanation": "Palkkaamasi henkilö voi tavoitella eri asiaa kuin sinä.",
+    "example": "Myyjä saa palkkion kauppojen määrästä, vaikka yritykselle tärkeintä olisi pitkä asiakassuhde.",
+    "category": "economics", "tags": ["kannustimet", "delegointi"], "aliases": ["päämies agentti ongelma", "agenttiongelma"], "searchKeywords": ["eturistiriita"], "relatedConceptIds": ["moral-hazard", "goodhart"]
+  },
+  {
+    "id": "short-squeeze", "slug": "short-squeeze", "name": "Short squeeze", "englishName": "Short squeeze",
+    "shortDefinition": "Hinnannousu voimistuu, kun lyhyeksi myyneet joutuvat ostamaan kohdetta sulkeakseen positionsa.",
+    "explanation": "Lyhyeksi myyjä on myynyt lainattua omaisuutta ja joutuu ostamaan sitä takaisin. Nousu voi kasvattaa tappioita ja vakuusvaatimuksia, mikä käynnistää lisää ostoja.",
+    "simpleExplanation": "Laskua odottaneet joutuvat ostamaan, ja ostot nostavat hintaa lisää.",
+    "example": "Osakkeen hinta nousee uutisen jälkeen. Lyhyeksi myyneiden takaisinostot kiihdyttävät nousua.",
+    "category": "economics", "tags": ["sijoittaminen", "markkinat"], "aliases": ["lyhyeksimyyntipuristus"], "searchKeywords": ["shorttaus", "takaisinosto"], "relatedConceptIds": ["pump-dump", "black-swan"]
+  },
+  {
+    "id": "network-effect", "slug": "verkostovaikutus", "name": "Verkostovaikutus", "englishName": "Network effect",
+    "shortDefinition": "Tuotteen tai palvelun hyöty muuttuu sen mukaan, kuinka moni muu käyttää sitä.",
+    "explanation": "Positiivinen vaikutus voi syntyä suoraan muista käyttäjistä tai välillisesti esimerkiksi sovellusten lisääntymisestä. Ruuhka voi puolestaan aiheuttaa negatiivisen vaikutuksen.",
+    "simpleExplanation": "Viestipalvelu on hyödyllisempi, jos ystäväsikin käyttävät sitä.",
+    "example": "Uusi maksusovellus kiinnostaa asiakkaita enemmän, kun yhä useampi kauppa hyväksyy sen.",
+    "category": "economics", "tags": ["verkostot", "alustat"], "aliases": ["verkostoefekti"], "searchKeywords": ["käyttäjämäärä"], "relatedConceptIds": ["path-dependence", "schelling-point"]
+  },
+  {
+    "id": "sunk-cost", "slug": "uponneet-kustannukset", "name": "Uponneet kustannukset", "englishName": "Sunk cost",
+    "shortDefinition": "Jo syntyneet kustannukset, joita nykyinen päätös ei voi enää palauttaa.",
+    "explanation": "Päätöksessä kannattaa verrata tulevia hyötyjä ja kustannuksia. Uponneiden kustannusten harhassa jatkamista perustellaan sillä, kuinka paljon on jo panostettu.",
+    "simpleExplanation": "Jo käytetty raha ei palaa sillä, että käytät lisää huonoon hankkeeseen.",
+    "example": "Katsot tylsän elokuvan loppuun vain siksi, että maksoit lipusta, vaikka käyttäisit jäljellä olevan ajan mieluummin toisin.",
+    "category": "decisions", "tags": ["päätökset", "kustannukset"], "aliases": ["uponneen kustannuksen harha", "sunk cost fallacy"], "searchKeywords": ["menetetyt kustannukset"], "relatedConceptIds": ["path-dependence", "cognitive-dissonance"]
+  },
+  {
+    "id": "confirmation-bias", "slug": "vahvistusharha", "name": "Vahvistusharha", "englishName": "Confirmation bias",
+    "shortDefinition": "Taipumus etsiä ja tulkita tietoa niin, että se tukee aiempia käsityksiä.",
+    "explanation": "Omaa näkemystä tukevat havainnot voivat tuntua vakuuttavammilta kuin sitä haastavat havainnot. Harhaa voi vähentää etsimällä aktiivisesti havaintoja, jotka osoittaisivat oman ajatuksen vääräksi.",
+    "simpleExplanation": "Huomaat helpommin sen, mitä jo valmiiksi odotat näkeväsi.",
+    "example": "Luet vain tuotteen kehuvia arvioita sen jälkeen, kun olet päättänyt ostaa sen.",
+    "category": "psychology", "tags": ["ajattelu", "tieto"], "aliases": ["vahvistusvinouma"], "searchKeywords": ["ennakkokäsitys"], "relatedConceptIds": ["cherry-picking", "cognitive-dissonance"]
+  },
+  {
+    "id": "availability-bias", "slug": "saatavuusharha", "name": "Saatavuusharha", "englishName": "Availability bias",
+    "shortDefinition": "Arvio yleisyydestä tai todennäköisyydestä painottuu helposti mieleen tuleviin esimerkkeihin.",
+    "explanation": "Tuore, voimakas tai paljon uutisoitu tapahtuma palautuu mieleen helposti. Muistamisen helppous ei kuitenkaan välttämättä vastaa tapahtuman todellista yleisyyttä.",
+    "simpleExplanation": "Helposti muistuva asia tuntuu tavallisemmalta kuin se ehkä on.",
+    "example": "Yhden näyttävän lento-onnettomuusuutisen jälkeen lentäminen tuntuu aiempaa vaarallisemmalta ilman uutta tilastotietoa.",
+    "category": "psychology", "tags": ["muisti", "riskit"], "aliases": ["saatavuusheuristiikka", "availability heuristic"], "searchKeywords": ["mieleenpalautuminen"], "relatedConceptIds": ["moral-panic", "black-swan"]
+  },
+  {
+    "id": "anchoring", "slug": "ankkurointiharha", "name": "Ankkurointiharha", "englishName": "Anchoring bias",
+    "shortDefinition": "Ensimmäinen luku tai tieto ohjaa myöhempää arviota liikaa.",
+    "explanation": "Arvio voi jäädä lähelle lähtökohtaa, vaikka se olisi sattumanvarainen tai huonosti perusteltu. Uuden tiedon perusteella tehty korjaus ei aina riitä poistamaan ankkurin vaikutusta.",
+    "simpleExplanation": "Ensimmäinen näkemäsi hinta jää vertailukohdaksi.",
+    "example": "Tuotteen korkea yliviivattu hinta saa nykyisen hinnan tuntumaan halvalta, vaikka kilpailijalla se maksaa vähemmän.",
+    "category": "psychology", "tags": ["arviot", "hinnat"], "aliases": ["ankkuroituminen", "ankkurointi"], "searchKeywords": ["lähtöarvo"], "relatedConceptIds": ["confirmation-bias", "halo"]
+  },
+  {
+    "id": "survivorship", "slug": "selviytymisharha", "name": "Selviytymisharha", "englishName": "Survivorship bias",
+    "shortDefinition": "Johtopäätös vääristyy, kun tarkastellaan vain näkyviin tai jäljelle jääneitä tapauksia.",
+    "explanation": "Epäonnistuneet, kadonneet tai valinnan ulkopuolelle jääneet havainnot puuttuvat aineistosta. Jäljelle jääneiden ominaisuuksia ei siksi voi sellaisenaan pitää menestyksen syinä.",
+    "simpleExplanation": "Voittajien tarinat eivät kerro, mitä kaikille yrittäneille tapahtui.",
+    "example": "Menestyneiden yrittäjien riskinottoa jäljitellään huomioimatta samalla tavalla toimineita konkurssiin päätyneitä.",
+    "category": "psychology", "tags": ["aineisto", "valikoituminen"], "aliases": ["selviytyjäharha", "eloonjäämisharha"], "searchKeywords": ["puuttuvat havainnot"], "relatedConceptIds": ["cherry-picking", "lindy"]
+  },
+  {
+    "id": "halo", "slug": "haloefekti", "name": "Haloefekti", "englishName": "Halo effect",
+    "shortDefinition": "Yksi myönteinen vaikutelma parantaa arviota myös kohteen muista ominaisuuksista.",
+    "explanation": "Yleisvaikutelma voi valua erillisiin arvioihin ilman niitä tukevaa tietoa. Kielteisestä vastaavasta vaikutuksesta puhutaan joskus sarvivaikutuksena.",
+    "simpleExplanation": "Koska joku on hyvä yhdessä asiassa, oletat hänen olevan hyvä muissakin.",
+    "example": "Sujuvasti esiintyvää hakijaa pidetään automaattisesti myös tarkkana laskijana.",
+    "category": "psychology", "tags": ["vaikutelmat", "arviointi"], "aliases": ["sädekehävaikutus", "halo-efekti"], "searchKeywords": ["ensivaikutelma"], "relatedConceptIds": ["anchoring", "ad-hominem"]
+  },
+  {
+    "id": "dunning-kruger", "slug": "dunning-kruger-vaikutus", "name": "Dunning–Kruger-vaikutus", "englishName": "Dunning–Kruger effect",
+    "shortDefinition": "Joissakin tehtävissä heikosti suoriutuvat yliarvioivat osaamistaan suhteessa mitattuun suoritukseen.",
+    "explanation": "Ilmiötä on selitetty vaikeudella tunnistaa omia virheitä. Tuloksiin vaikuttavat myös mittaustapa ja tilastolliset tekijät, eikä kyse ole kaikkia ihmisiä luokittelevasta säännöstä.",
+    "simpleExplanation": "Vähäinen osaaminen voi vaikeuttaa oman osaamisen puutteiden huomaamista.",
+    "example": "Aloittelija arvioi testituloksensa korkeaksi, koska ei vielä tunnista kysymysten vaikeita kohtia.",
+    "category": "psychology", "tags": ["osaaminen", "itsearviointi"], "aliases": ["Dunning Kruger", "dunning kruger efekti"], "searchKeywords": ["ylivarmuus"], "relatedConceptIds": ["confirmation-bias", "halo"],
+    "nuanceNote": "Suosittu kuvaaja aloittelijan itsevarmuushuipusta ei sellaisenaan ole alkuperäinen tutkimustulos. Selityksistä ja vaikutuksen suuruudesta käydään tutkimuskeskustelua.",
+    "sources": [{ "label": "Magnus & Peresetsky (2022): A Statistical Explanation of the Dunning–Kruger Effect", "url": "https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2022.840180/full" }, { "label": "Comment on Gignac and Zajenkowski (2023): tutkimuskeskustelua tilastollisesta selityksestä", "url": "https://www.sciencedirect.com/science/article/pii/S0160289623000132" }]
+  },
+  {
+    "id": "cognitive-dissonance", "slug": "kognitiivinen-dissonanssi", "name": "Kognitiivinen dissonanssi", "englishName": "Cognitive dissonance",
+    "shortDefinition": "Epämukava jännite, joka syntyy ristiriidasta omien käsitysten, arvojen tai toiminnan välillä.",
+    "explanation": "Jännitettä voi lievittää muuttamalla toimintaa, tarkistamalla käsitystä tai selittämällä ristiriitaa pois. Käsite kuvaa motivaatiota johdonmukaisuuteen, ei kaikkien ristiriitojen yhtä syytä.",
+    "simpleExplanation": "Teet yhtä ja uskot toista, ja ero tuntuu hankalalta.",
+    "example": "Ympäristöä tärkeänä pitävä henkilö puolustelee turhaa ostosta sillä, ettei yhdellä ostoksella ole merkitystä.",
+    "category": "psychology", "tags": ["arvot", "toiminta"], "aliases": ["tiedollinen ristiriita"], "searchKeywords": ["ristiriita", "järkeistäminen"], "relatedConceptIds": ["sunk-cost", "confirmation-bias"]
+  },
+  {
+    "id": "straw-man", "slug": "olkinukke", "name": "Olkinukke", "englishName": "Straw man",
+    "shortDefinition": "Toisen väite korvataan vääristyneellä versiolla, joka on helpompi kumota.",
+    "explanation": "Vastaus ei osu alkuperäiseen perusteluun vaan esimerkiksi sen liioiteltuun tai yksinkertaistettuun muotoon. Reilu vastaus edellyttää vastapuolen kannan tunnistettavaa esittämistä.",
+    "simpleExplanation": "Kumot väitteen, jota toinen ei oikeasti esittänyt.",
+    "example": "Ehdotukseen vähentää kokouksia vastataan: haluat siis lopettaa kaiken yhteistyön.",
+    "category": "argumentation", "tags": ["argumenttivirheet", "väittely"], "aliases": ["olkinukkeargumentti"], "searchKeywords": ["vääristely"], "relatedConceptIds": ["false-dilemma", "ad-hominem"]
+  },
+  {
+    "id": "whataboutism", "slug": "whataboutismi", "name": "Whataboutismi", "englishName": "Whataboutism",
+    "shortDefinition": "Kritiikkiin vastataan siirtämällä huomio toisen tekemiseen käsittelemättä alkuperäistä asiaa.",
+    "explanation": "Entä sitten tuo toinen -vastaus voi paljastaa epäjohdonmukaisuutta, mutta se ei yksin ratkaise alkuperäisen väitteen paikkansapitävyyttä.",
+    "simpleExplanation": "Oman teon sijaan aletaan puhua jonkun muun virheestä.",
+    "example": "Kysymykseen oman hankkeen ylityksestä vastataan vain muistuttamalla kilpailijan vanhasta ylityksestä.",
+    "category": "argumentation", "tags": ["väittely", "huomio"], "aliases": ["entäsismi", "entä sitten"], "searchKeywords": ["huomion siirtäminen"], "relatedConceptIds": ["ad-hominem", "moving-goalposts"],
+    "nuanceNote": "Vertailu voi olla asiaankuuluva. Virhe syntyy, jos vertailu korvaa vastauksen alkuperäiseen kysymykseen."
+  },
+  {
+    "id": "ad-hominem", "slug": "ad-hominem", "name": "Ad hominem", "englishName": "Ad hominem",
+    "shortDefinition": "Väitettä torjutaan hyökkäämällä sen esittäjää vastaan asiaan liittyvien perustelujen sijaan.",
+    "explanation": "Henkilön ominaisuus ei yleensä ratkaise väitteen totuutta. Lähteen luotettavuus tai eturistiriita voi kuitenkin olla merkityksellinen, kun arvioidaan todistusta tai asiantuntijalausuntoa.",
+    "simpleExplanation": "Et vastaa väitteeseen vaan moitit väittäjää.",
+    "example": "Laskelman virheestä huomauttava sivuutetaan sanomalla, että hän on muutenkin ärsyttävä.",
+    "category": "argumentation", "tags": ["argumenttivirheet", "henkilöt"], "aliases": ["henkilöön käyvä argumentti"], "searchKeywords": ["henkilöhyökkäys"], "relatedConceptIds": ["straw-man", "halo"]
+  },
+  {
+    "id": "gish-gallop", "slug": "gish-laukka", "name": "Gish-laukka", "englishName": "Gish gallop",
+    "shortDefinition": "Väittelytaktiikka, jossa esitetään niin paljon heikkoja väitteitä, ettei niihin ehditä vastata.",
+    "explanation": "Väitteen tarkistaminen vie usein enemmän aikaa kuin sen esittäminen. Suuri määrä voi luoda vakuuttavan vaikutelman, vaikka perustelujen laatu olisi heikko.",
+    "simpleExplanation": "Väitteitä vyörytetään nopeammin kuin toinen ehtii tarkistaa niitä.",
+    "example": "Puhuja luettelee minuutissa kaksikymmentä virheellistä lukua ja tulkitsee vastaamatta jääneet kohdat voitoikseen.",
+    "category": "argumentation", "tags": ["väittely", "taktiikat"], "aliases": ["gish gallop", "gishin laukka"], "searchKeywords": ["väitetulva"], "relatedConceptIds": ["cherry-picking", "moving-goalposts"]
+  },
+  {
+    "id": "motte-bailey", "slug": "motte-and-bailey", "name": "Motte-and-bailey", "englishName": "Motte-and-bailey",
+    "shortDefinition": "Kiistanalaista väitettä puolustetaan vaihtamalla se hetkeksi helpommin puolustettavaan väitteeseen.",
+    "explanation": "Laajan väitteen kohdatessa kritiikkiä puhuja vetäytyy suppeampaan väitteeseen ja antaa ymmärtää tarkoittaneensa aina sitä. Myöhemmin hän voi palata laajaan väitteeseen.",
+    "simpleExplanation": "Puolustetaan pientä väitettä, mutta otetaan kunnia suuren väitteen todistamisesta.",
+    "example": "Väite menetelmän parantavan kaikki vaivat vaihtuu kritiikin alla väitteeksi, että rentoutuminen voi tuntua hyvältä.",
+    "category": "argumentation", "tags": ["väittely", "taktiikat"], "aliases": ["motte ja bailey", "linna ja esipiha"], "searchKeywords": ["väitteen vaihtaminen"], "relatedConceptIds": ["moving-goalposts", "dog-whistle"]
+  },
+  {
+    "id": "moving-goalposts", "slug": "maalitolppien-siirtaminen", "name": "Maalitolppien siirtäminen", "englishName": "Moving the goalposts",
+    "shortDefinition": "Hyväksymisen ehtoja muutetaan sen jälkeen, kun aiemmat ehdot on täytetty.",
+    "explanation": "Väitteen tueksi pyydetty näyttö ei enää riitä, vaan vaaditaan jatkuvasti uutta. Perusteltu ehtojen tarkistus uuden tiedon vuoksi on eri asia kuin onnistumisen tekeminen mahdottomaksi.",
+    "simpleExplanation": "Kun pääset maaliin, toinen siirtää maalin kauemmas.",
+    "example": "Ensin vaaditaan yksi onnistunut testi. Sen saatuaan arvioija vaatii kymmenen eikä perustele muutosta.",
+    "category": "argumentation", "tags": ["näyttö", "kriteerit"], "aliases": ["maalitolppien siirtely"], "searchKeywords": ["ehtojen muuttaminen"], "relatedConceptIds": ["motte-bailey", "gish-gallop"]
+  },
+  {
+    "id": "false-dilemma", "slug": "vaara-dilemma", "name": "Väärä dilemma", "englishName": "False dilemma",
+    "shortDefinition": "Tilanne esitetään vain kahden vaihtoehdon valintana, vaikka muitakin vaihtoehtoja on.",
+    "explanation": "Vaihtoehtoja voidaan rajata keinotekoisesti tai jatkumo esittää kahtena ääripäänä. Jos vaihtoehdot todella ovat kattavat ja toisensa poissulkevat, kahden vaihtoehdon asetelma on perusteltu.",
+    "simpleExplanation": "Sinulle tarjotaan vain joko–tai, vaikka voisit valita muutakin.",
+    "example": "Joko hyväksyt suunnitelman sellaisenaan tai vastustat kaikkea kehitystä.",
+    "category": "argumentation", "tags": ["argumenttivirheet", "vaihtoehdot"], "aliases": ["väärä kahtiajako", "false dichotomy"], "searchKeywords": ["mustavalkoisuus"], "relatedConceptIds": ["straw-man", "zero-sum"]
+  },
+  {
+    "id": "slippery-slope", "slug": "kalteva-pinta", "name": "Kalteva pinta", "englishName": "Slippery slope",
+    "shortDefinition": "Perustelu, jossa ensimmäisen askeleen väitetään johtavan haitalliseen tapahtumaketjuun.",
+    "explanation": "Ketju voi olla uskottava, jos vaiheiden väliset mekanismit ja todennäköisyydet perustellaan. Argumenttivirheeksi se muuttuu, kun lopputulos oletetaan väistämättömäksi ilman riittävää näyttöä.",
+    "simpleExplanation": "Pienen muutoksen pelätään käynnistävän suuren vyöryn.",
+    "example": "Yhden etätyöpäivän sallimisen väitetään johtavan toimiston täydelliseen sulkemiseen ilman perusteltua välivaihetta.",
+    "category": "argumentation", "tags": ["seuraukset", "perustelut"], "aliases": ["kaltevan pinnan argumentti", "liukas rinne"], "searchKeywords": ["dominoefekti"], "relatedConceptIds": ["false-dilemma", "moral-panic"]
+  },
+  {
+    "id": "circular-reasoning", "slug": "kehapaattely", "name": "Kehäpäättely", "englishName": "Circular reasoning",
+    "shortDefinition": "Johtopäätös oletetaan todeksi jo sen omissa perusteluissa.",
+    "explanation": "Perustelu voi kiertää usean väitteen kautta, mutta se ei tarjoa johtopäätöksestä riippumatonta tukea. Sama väite eri sanoin ei vielä vahvista väitettä.",
+    "simpleExplanation": "Asia on tosi, koska olet jo olettanut sen todeksi.",
+    "example": "Sääntö on oikea, koska käsikirja sanoo niin; käsikirja on luotettava, koska se sisältää tämän oikean säännön.",
+    "category": "argumentation", "tags": ["logiikka", "perustelut"], "aliases": ["kehäpäätelmä"], "searchKeywords": ["circular argument"], "relatedConceptIds": ["confirmation-bias", "occam"]
+  },
+  {
+    "id": "cherry-picking", "slug": "kirsikanpoiminta", "name": "Kirsikanpoiminta", "englishName": "Cherry-picking",
+    "shortDefinition": "Näytöstä valitaan omaa väitettä tukevat osat ja sivuutetaan merkityksellinen vastanäyttö.",
+    "explanation": "Yksittäiset havainnot voivat olla oikeita, vaikka niistä koottu kokonaiskuva olisi harhaanjohtava. Arviointiin tarvitaan johdonmukainen valintaperuste ja tieto myös pois jätetyistä havainnoista.",
+    "simpleExplanation": "Näytät vain ne palat, jotka sopivat tarinaasi.",
+    "example": "Raportti esittelee kolme parasta myyntikuukautta mutta jättää yhdeksän heikkoa kuukautta mainitsematta.",
+    "category": "argumentation", "tags": ["aineisto", "näyttö"], "aliases": ["cherry picking", "rusinoiden poiminta"], "searchKeywords": ["valikoiva näyttö"], "relatedConceptIds": ["confirmation-bias", "survivorship"]
+  },
+  {
+    "id": "occam", "slug": "occamin-partaveitsi", "name": "Occamin partaveitsi", "englishName": "Occam's razor",
+    "shortDefinition": "Kun selitykset sopivat näyttöön yhtä hyvin, suosi vähemmän lisäoletuksia vaativaa.",
+    "explanation": "Periaate auttaa vertailemaan selityksiä, mutta yksinkertaisuus ei yksin tee niistä tosia. Uusi näyttö voi edellyttää aiempaa monimutkaisempaa mallia.",
+    "simpleExplanation": "Älä lisää selitykseen oletuksia, joita et tarvitse.",
+    "example": "Kadonneiden avainten syyksi tarkistetaan ensin tuttu tasku ennen oletusta monimutkaisesta varkaudesta.",
+    "category": "decisions", "tags": ["selitykset", "heuristiikat"], "aliases": ["Ockhamin partaveitsi", "Occam razor"], "searchKeywords": ["yksinkertaisuus"], "relatedConceptIds": ["hanlon", "circular-reasoning"]
+  },
+  {
+    "id": "hanlon", "slug": "hanlonin-partaveitsi", "name": "Hanlonin partaveitsi", "englishName": "Hanlon's razor",
+    "shortDefinition": "Älä oleta pahantahtoisuutta, jos virhe, tietämättömyys tai huolimattomuus riittää selitykseksi.",
+    "explanation": "Nyrkkisääntö muistuttaa arkisista vaihtoehdoista vihamieliselle tulkinnalle. Se ei todista hyvää tahtoa eikä kehota sivuuttamaan näyttöä tarkoituksellisesta vahingosta.",
+    "simpleExplanation": "Toinen saattoi mokata eikä yrittää vahingoittaa sinua.",
+    "example": "Vastaamatta jäänyt viesti voi johtua kiireestä tai unohtamisesta, ei tarkoituksellisesta loukkauksesta.",
+    "category": "decisions", "tags": ["tulkinnat", "heuristiikat"], "aliases": ["Hanlon razor"], "searchKeywords": ["pahantahtoisuus"], "relatedConceptIds": ["occam", "confirmation-bias"]
+  },
+  {
+    "id": "goodhart", "slug": "goodhartin-laki", "name": "Goodhartin laki", "englishName": "Goodhart's law",
+    "shortDefinition": "Kun mittarista tehdään tavoite, sen yhteys tavoiteltuun asiaan voi heikentyä.",
+    "explanation": "Ihmiset sopeuttavat toimintaansa palkittuun mittariin. Luku voi parantua ilman, että varsinainen tavoite toteutuu, jos mittari kattaa vain osan tavoitteen sisällöstä.",
+    "simpleExplanation": "Saat lisää sitä, mitä mittaat, mutta et välttämättä sitä, mitä halusit.",
+    "example": "Asiakastukea palkitaan lyhyistä puheluista, jolloin puhelut lyhenevät mutta ongelmia jää ratkaisematta.",
+    "category": "decisions", "tags": ["mittarit", "kannustimet"], "aliases": ["Goodhart law"], "searchKeywords": ["mittaaminen", "optimointi"], "relatedConceptIds": ["principal-agent", "technocracy"],
+    "nuanceNote": "Kyse on mittaamisen ja kannustimien ongelmaa kuvaavasta periaatteesta, ei poikkeuksettomasta luonnonlaista."
+  },
+  {
+    "id": "streisand", "slug": "streisand-ilmio", "name": "Streisand-ilmiö", "englishName": "Streisand effect",
+    "shortDefinition": "Yritys peittää tietoa kasvattaa sen saamaa huomiota.",
+    "explanation": "Poistovaatimus tai vaientamisyritys voi itsessään muuttua uutiseksi ja saada ihmiset etsimään alkuperäistä tietoa. Näin torjuntatoimi voi toimia tavoitettaan vastaan.",
+    "simpleExplanation": "Salailuyritys saa kaikki kiinnostumaan asiasta.",
+    "example": "Vähän luetun arvostelun poistovaatimus johtaa siihen, että tuhannet ihmiset jakavat sen.",
+    "category": "media", "tags": ["julkisuus", "tieto"], "aliases": ["Streisand efekti", "Streisand effect"], "searchKeywords": ["sensuuri", "salailu"], "relatedConceptIds": ["network-effect", "astroturfing"]
+  },
+  {
+    "id": "black-swan", "slug": "musta-joutsen", "name": "Musta joutsen", "englishName": "Black swan",
+    "shortDefinition": "Havaitsijan odotusten ulkopuolelle jäävä tapahtuma, jolla on suuri vaikutus ja jolle löydetään jälkikäteen selityksiä.",
+    "explanation": "Käsite korostaa ennustemallien rajoja ja jälkiviisautta. Harvinaisuus yksin ei riitä: tapahtuma voi olla yhdelle odottamaton ja toiselle ennakoitavissa.",
+    "simpleExplanation": "Suuri yllätys näyttää jälkeenpäin paljon ennakoitavammalta kuin se oli.",
+    "example": "Yritys kohtaa ennakoimansa riskilistan ulkopuolisen teknisen muutoksen, joka romuttaa sen liiketoimintamallin.",
+    "category": "decisions", "tags": ["riskit", "epävarmuus"], "aliases": ["black swan event"], "searchKeywords": ["yllätys", "harvinainen tapahtuma"], "relatedConceptIds": ["availability-bias", "short-squeeze"]
+  },
+  {
+    "id": "zero-sum", "slug": "nollasummapeli", "name": "Nollasummapeli", "englishName": "Zero-sum game",
+    "shortDefinition": "Tilanne, jossa yhden saama hyöty vastaa muiden yhteenlaskettua menetystä.",
+    "explanation": "Hyötyjen summa pysyy nollana valitulla mittarilla. Kaikki kilpailu ei ole nollasummaista: yhteistyö voi kasvattaa jaettavaa hyötyä, ja huono toiminta voi pienentää sitä.",
+    "simpleExplanation": "Kun jaetaan muuttumaton kakku, yhden suurempi pala pienentää muiden paloja.",
+    "example": "Kahden pelaajan rahapanoksessa ilman kuluja toisen voittama euro on toisen menettämä euro.",
+    "category": "games", "tags": ["kilpailu", "hyödyt"], "aliases": ["nollasumma", "zero sum"], "searchKeywords": ["voitto ja tappio"], "relatedConceptIds": ["prisoners-dilemma", "false-dilemma"]
+  },
+  {
+    "id": "prisoners-dilemma", "slug": "vangin-dilemma", "name": "Vangin dilemma", "englishName": "Prisoner's dilemma",
+    "shortDefinition": "Peli, jossa kummankin oma kannustin ohjaa valintaan, joka tuottaa molemmille yhteistyötä huonomman tuloksen.",
+    "explanation": "Kertapelissä poikkeaminen yhteistyöstä kannattaa kummallekin riippumatta toisen valinnasta. Yhteinen yhteistyö tuottaisi silti molemmille paremman tuloksen kuin yhteinen poikkeaminen.",
+    "simpleExplanation": "Molemmat hyötyisivät yhteistyöstä, mutta kummankin kannattaa yksin livetä siitä.",
+    "example": "Kaksi yritystä voisi säästää mainoskuluissa yhdessä, mutta kumpikin hyötyy lisämainonnasta toisen säästäessä. Lopulta molemmat kuluttavat paljon.",
+    "category": "games", "tags": ["yhteistyö", "kannustimet"], "aliases": ["vankien dilemma", "prisoners dilemma"], "searchKeywords": ["yhteistyöongelma"], "relatedConceptIds": ["nash", "commons"]
+  },
+  {
+    "id": "nash", "slug": "nashin-tasapaino", "name": "Nashin tasapaino", "englishName": "Nash equilibrium",
+    "shortDefinition": "Tilanne, jossa kukaan pelaaja ei hyödy oman strategiansa muuttamisesta muiden pitäessä omansa.",
+    "explanation": "Tasapaino kuvaa pelaajien valintojen keskinäistä vakautta. Se ei tarkoita parasta yhteistä lopputulosta, eikä kaikissa peleissä ole vain yhtä tasapainoa.",
+    "simpleExplanation": "Kenenkään ei kannata yksin vaihtaa valintaansa.",
+    "example": "Kun kaikki ajavat samalla puolella tietä, yksittäinen kuljettaja ei hyödy ajopuolen vaihtamisesta.",
+    "category": "games", "tags": ["strategiat", "tasapaino"], "aliases": ["Nash-tasapaino"], "searchKeywords": ["paras vastaus"], "relatedConceptIds": ["prisoners-dilemma", "schelling-point"]
+  },
+  {
+    "id": "schelling-point", "slug": "schellingin-piste", "name": "Schellingin piste", "englishName": "Schelling point",
+    "shortDefinition": "Luontevasti erottuva ratkaisu, johon ihmiset voivat päätyä ilman keskinäistä sopimista.",
+    "explanation": "Yhteinen kulttuuri, näkyvyys tai tuttuus tekee yhdestä vaihtoehdosta ilmeisen. Ratkaisu perustuu odotukseen siitä, mitä toinenkin pitää ilmeisenä.",
+    "simpleExplanation": "Valitset paikan, jonka arvelet toisenkin valitsevan.",
+    "example": "Torilla toisensa kadottaneet ystävät palaavat kumpikin suuren kellon alle ilman uutta viestiä.",
+    "category": "games", "tags": ["koordinaatio", "odotukset"], "aliases": ["polttopiste", "focal point"], "searchKeywords": ["yhteinen ratkaisu"], "relatedConceptIds": ["nash", "network-effect"]
+  },
+  {
+    "id": "commons", "slug": "yhteismaan-ongelma", "name": "Yhteismaan ongelma", "englishName": "Tragedy of the commons",
+    "shortDefinition": "Yhteinen rajallinen resurssi voi kulua liikaa, kun yksilön hyöty ja yhteiset kustannukset eriytyvät.",
+    "explanation": "Lisäkäytön hyöty tulee käyttäjälle, mutta haitta jakautuu muille. Yhteiset säännöt, valvonta ja toimivat instituutiot voivat estää ylikäyttöä; se ei ole yhteisomistuksen väistämätön seuraus.",
+    "simpleExplanation": "Jos jokainen ottaa yhteisestä varannosta liikaa, se ehtyy kaikilta.",
+    "example": "Yhteisen kalakannan jokainen kalastaja hyötyy lisäsaaliista, mutta kaikkien yhteinen lisäpyynti heikentää kannan uusiutumista.",
+    "category": "games", "tags": ["yhteisresurssit", "kannustimet"], "aliases": ["yhteismaan tragedia", "yhteisresurssien ongelma"], "searchKeywords": ["ylikäyttö"], "relatedConceptIds": ["prisoners-dilemma", "moral-hazard"]
+  },
+  {
+    "id": "pareto", "slug": "pareton-periaate", "name": "Pareton periaate", "englishName": "Pareto principle",
+    "shortDefinition": "Nyrkkisääntö, jonka mukaan pieni osa syistä tuottaa usein suuren osan seurauksista.",
+    "explanation": "Periaate tunnetaan 80/20-sääntönä ja auttaa etsimään vaikutuksiltaan tärkeimpiä tekijöitä. Tarkat osuudet riippuvat aineistosta, eivätkä kaikki ilmiöt noudata tätä jakaumaa.",
+    "simpleExplanation": "Muutama tärkeä asia voi vaikuttaa enemmän kuin monet pienet yhteensä.",
+    "example": "Ohjelmiston muutama yleinen virhe voi aiheuttaa suuren osan asiakastuen yhteydenotoista.",
+    "category": "decisions", "tags": ["priorisointi", "jakaumat"], "aliases": ["80/20-sääntö", "Pareto 80 20"], "searchKeywords": ["tehokkuus", "epätasainen jakauma"], "relatedConceptIds": ["goodhart", "survivorship"],
+    "nuanceNote": "80 ja 20 ovat havainnollistavia lukuja, eivät yleispäteviä vakioita. Tämä periaate on eri asia kuin Pareto-tehokkuus."
+  },
+  {
+    "id": "lindy", "slug": "lindy-vaikutus", "name": "Lindy-vaikutus", "englishName": "Lindy effect",
+    "shortDefinition": "Ajatus, että joidenkin kulumattomien ilmiöiden pitkä historia voi ennakoida pitkää tulevaa elinkaarta.",
+    "explanation": "Periaatetta sovelletaan esimerkiksi kirjoihin tai tapoihin, joiden säilyminen kertoo toistuvasta kysynnästä. Se edellyttää sopivaa elinkaarimallia eikä sovellu automaattisesti ihmisiin tai kuluviin esineisiin.",
+    "simpleExplanation": "Pitkään käytössä säilynyt idea saattaa säilyä käytössä vielä pitkään.",
+    "example": "Satoja vuosia luettu teos voi olla vahvempi ehdokas tulevaksi klassikoksi kuin eilinen myyntihitti.",
+    "category": "decisions", "tags": ["aika", "ennustaminen"], "aliases": ["Lindy-ilmiö"], "searchKeywords": ["kestävyys", "elinkaari"], "relatedConceptIds": ["survivorship", "path-dependence"],
+    "nuanceNote": "Kyse on ehdollisesta mallista, ei takuusta. Ympäristön muutos voi katkaista pitkänkin historian.",
+    "sources": [{ "label": "Toby Ord (2023): The Lindy Effect", "url": "https://arxiv.org/abs/2308.09045" }]
+  }
+]

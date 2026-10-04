@@ -5,6 +5,7 @@ import { App } from "./app/App";
 import { SettingsProvider } from "./app/providers/SettingsProvider";
 import { UserStateProvider } from "./app/providers/UserStateProvider";
 import "./styles/globals.css";
+import "./styles/concepts.css";
 
 const routerBasename = import.meta.env.BASE_URL.replace(/\/$/, "") || "/";
 

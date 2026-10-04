@@ -204,3 +204,51 @@ test("unsupported speech keeps the explanation readable", async ({ page }) => {
   await expect(page.getByText("Ääneenluku ei ole käytettävissä tässä selaimessa.")).toBeVisible();
   await expect(page.locator(".quick-answer")).toContainText("Näennäisesti ristiriitainen");
 });
+
+test("democrat has a direct contextual explanation and a listen button even offline", async ({ page, context }) => {
+  await installSpeech(page);
+  await page.goto("/hae?q=mit%C3%A4%20tarkoittaa%20demokraatti");
+  const answer = page.getByRole("article", { name: "Nopea selitys" });
+  await expect(answer).toContainText("Demokratian eli kansanvallan kannattaja");
+  await expect(answer).toContainText("Yhdysvalloissa");
+  await expect(answer).toContainText("lehden nimi");
+  await expect(page.locator(".concept-online")).toHaveCount(0);
+  await context.setOffline(true);
+  await answer.getByRole("button", { name: "Kuuntele selitys" }).click();
+  expect((await speechState(page)).calls[0].text).toContain("Puoluepolitiikassa myös");
+  await answer.getByRole("button", { name: "Lopeta lukeminen" }).click();
+  await page.getByRole("searchbox").fill("demokraatit");
+  await expect(answer.getByRole("heading")).toHaveText("Demokraatti");
+});
+
+test("ambiguous online results retain their meanings and can be read without leaving TAJU", async ({ page }) => {
+  await installSpeech(page);
+  const extract = "Kuusi voi tarkoittaa eri asioita:\n\nLuku 6.\nHavupuu, joka kasvaa pohjoisilla alueilla.";
+  await page.route("https://*.wikipedia.org/w/api.php?*", (route) => route.fulfill({ json: {
+    query: { pages: [{ pageid: 456, title: "Kuusi", extract, pageprops: { disambiguation: "" } }] },
+  } }));
+  await page.goto("/hae?q=kuusi");
+  const result = page.locator(".concept-online__result");
+  await expect(page.getByText("Sanalla on useita merkityksiä. Asiayhteys ratkaisee tulkinnan.")).toBeVisible();
+  await expect(result).toContainText("Luku 6.");
+  await expect(result).toContainText("Havupuu");
+  await expect(result.locator(".concept-online__meanings")).toHaveCSS("white-space", "pre-line");
+  await expect(page.getByText("Kysytty käsite löytyi Wikipediasta.", { exact: true })).toHaveCount(0);
+  await result.getByRole("button", { name: "Kuuntele selitys" }).click();
+  expect((await speechState(page)).calls).toEqual([{ text: `Kuusi. ${extract}`, lang: "fi-FI" }]);
+  await page.getByRole("searchbox").fill("paradoksi");
+  await expect.poll(async () => (await speechState(page)).cancellations).toBe(1);
+});
+
+test("missing disambiguation extracts do not produce a made-up spoken explanation", async ({ page }) => {
+  await installSpeech(page);
+  await page.route("https://*.wikipedia.org/w/api.php?*", (route) => route.fulfill({ json: {
+    query: { pages: [{ pageid: 456, title: "Kuusi", pageprops: { disambiguation: "" } }] },
+  } }));
+  await page.goto("/hae?q=kuusi");
+  const result = page.locator(".concept-online__result");
+  await expect(result).toContainText("Merkitysten kuvauksia ei saatu");
+  await expect(result.getByRole("button", { name: "Kuuntele selitys" })).toHaveCount(0);
+  expect((await speechState(page)).calls).toEqual([]);
+  await expect(result.getByRole("link")).toHaveAttribute("href", "https://fi.wikipedia.org/?curid=456");
+});

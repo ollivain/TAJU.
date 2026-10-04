@@ -1,5 +1,19 @@
 [
   {
+    "id": "democrat", "slug": "demokraatti", "name": "Demokraatti", "englishName": "Democrat",
+    "shortDefinition": "Demokratian eli kansanvallan kannattaja. Puoluepolitiikassa myös demokraattisen puolueen jäsen tai kannattaja, esimerkiksi Yhdysvalloissa.",
+    "explanation": "Yleiskielessä demokraatti puolustaa kansanvaltaa. Puolueesta puhuttaessa maa ja asiayhteys kertovat, mitä demokraattista puoluetta tarkoitetaan. Sana voi siis kuvata poliittista periaatetta tai puoluesidosta.",
+    "simpleExplanation": "Sana voi tarkoittaa demokratian kannattajaa tai tietyn puolueen kannattajaa. Tarkista, mistä maasta ja tilanteesta puhutaan.",
+    "example": "Kun podcastissa verrataan demokraatteja ja republikaaneja, puhe on yleensä Yhdysvaltain puolueista ja niiden kannattajista.",
+    "category": "society", "tags": ["politiikka", "demokratia"], "aliases": ["demokraatit", "demokraatin", "demokraatteja", "demokraattien", "democrats"], "searchKeywords": ["kansanvalta", "puolue", "Yhdysvallat"], "relatedConceptIds": [],
+    "nuanceNote": "Demokraatti on myös suomalaisen lehden nimi. Ilman asiayhteyttä ei voi varmasti päätellä, mitä merkitystä puhuja tarkoittaa.",
+    "sources": [
+      { "label": "Wikisanakirja: demokraatti (sanan merkitykset)", "url": "https://en.wiktionary.org/wiki/demokraatti" },
+      { "label": "Yhdysvaltain demokraattinen puolue (puolueen oma sivusto)", "url": "https://democrats.org/" },
+      { "label": "Demokraatti-lehti", "url": "https://demokraatti.fi/" }
+    ]
+  },
+  {
     "id": "overton-window", "slug": "overtonin-ikkuna", "name": "Overtonin ikkuna", "englishName": "Overton window",
     "shortDefinition": "Malli siitä, millaisia poliittisia ehdotuksia pidetään tiettynä aikana hyväksyttävinä.",
     "explanation": "Julkisen keskustelun rajat muuttuvat arvojen, tapahtumien ja vaikuttamisen mukana. Ikkuna kuvaa poliittista hyväksyttävyyttä, ei ehdotuksen totuutta tai hyvyyttä.",

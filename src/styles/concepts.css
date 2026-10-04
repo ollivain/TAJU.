@@ -40,6 +40,7 @@
 .concept-online__result h3 a { display: inline-flex; align-items: center; gap: var(--space-2); min-height: var(--tap-target); text-underline-offset: 4px; }
 .concept-online__result a svg, .concept-online__actions svg { flex: none; }
 .concept-online__result > p:not(.concept-meta) { color: var(--color-ink-88); font-size: var(--text-body); line-height: 1.65; }
+.concept-online__meanings { white-space: pre-line; }
 .concept-online__actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-4); margin-top: var(--space-3); }
 .concept-online__actions a { display: inline-flex; align-items: center; gap: var(--space-2); }
 .concept-online__credit { margin-top: var(--space-3); color: var(--color-ink-70); font-size: var(--text-caption); line-height: 1.6; }

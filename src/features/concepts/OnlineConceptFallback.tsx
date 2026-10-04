@@ -40,7 +40,8 @@ export function OnlineConceptFallback({ term }: { term: string }) {
   const message = !online ? "Verkkohaku tarvitsee internetyhteyden. TAJUn omat käsitteet toimivat myös offline-tilassa."
     : state.status === "waiting" || state.status === "loading" ? "Etsitään Wikipediasta…"
       : state.status === "error" ? "Verkkohaku ei onnistunut. Kokeile uudelleen tai jatka Googleen."
-        : results.some((result) => result.match !== "related") ? "Kysytty käsite löytyi Wikipediasta."
+        : results.some((result) => result.disambiguation && result.match !== "related") ? "Sanalla on useita merkityksiä. Asiayhteys ratkaisee tulkinnan."
+          : results.some((result) => result.match !== "related") ? "Kysytty käsite löytyi Wikipediasta."
           : results.length ? "Täsmällistä käsitettä ei löytynyt. Alla on aiheeseen liittyviä hakutuloksia."
           : "Wikipediasta ei löytynyt osumaa. Kokeile toista nimeä tai jatka Googleen.";
 
@@ -52,11 +53,15 @@ export function OnlineConceptFallback({ term }: { term: string }) {
         <p className="concept-meta">Wikipedia · {result.language === "fi" ? "Suomi" : "Englanti"}</p>
         <h3><a href={result.url} target="_blank" rel="noreferrer"><span lang={result.language}>{result.redirectedFrom ?? result.title}</span><ArrowUpRight size={18} aria-hidden="true" /><span className="sr-only"> (avautuu uuteen välilehteen)</span></a></h3>
         {result.redirectedFrom && <p className="concept-meta">Wikipedian ohjaus · Lähdeartikkeli: {result.title}</p>}
-        {result.disambiguation ? <p>Termillä on useita merkityksiä. Valitse oikea Wikipediassa.</p>
-          : result.section ? <p>Käsite löytyy lähdeartikkelin osiosta ”{result.section.replaceAll("_", " ")}”. Avaa lähde lukeaksesi sen.</p>
+        {result.section ? <p>Käsite löytyy lähdeartikkelin osiosta ”{result.section.replaceAll("_", " ")}”. Avaa lähde lukeaksesi sen.</p>
+          : result.disambiguation ? <>
+            <p className="concept-meta">Mahdollisia merkityksiä · asiayhteys ratkaisee</p>
+            {result.extract ? <p className="concept-online__meanings" lang={result.language}>{result.extract}</p>
+              : <p>Merkitysten kuvauksia ei saatu Wikipediasta. Avaa lähde tarkistaaksesi vaihtoehdot.</p>}
+          </>
             : result.extract ? <p lang={result.language}>{result.extract}</p>
             : <p>Avaa lähde lukeaksesi lisää.</p>}
-        {result.extract && !result.disambiguation && !result.section && <SpeakButton text={`${result.title}. ${result.extract}`} lang={result.language === "en" ? "en-US" : "fi-FI"} />}
+        {result.extract && !result.section && <SpeakButton text={`${result.title}. ${result.extract}`} lang={result.language === "en" ? "en-US" : "fi-FI"} />}
       </article>)}
       <div className="concept-online__actions">
         {online && state.status === "error" && <button type="button" className="text-button text-button--accent" onClick={() => { setState({ status: "waiting" }); setAttempt((value) => value + 1); }}>Yritä verkkohakua uudelleen</button>}

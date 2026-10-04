@@ -20,11 +20,12 @@ export function ShortcutGuide() {
     <Squiggle weight={1.2} opacity={0.5} />
     <h1 className="display-heading concept-title">Sana selville napista</h1>
     <p className="concepts-intro">Kuulitko Spotifyssa oudon sanan? Toimintopainike voi käynnistää sanelun ja avata haun TAJUssa.</p>
-    <p className="shortcut-flow">Tauko → sanele sana → kuuntele selitys</p>
+    <p className="shortcut-flow">Tauko → sanele sana → avaa vastaus</p>
+    <p className="settings-help">Kuuntele vastaus napauttamalla TAJUn <strong>Kuuntele selitys</strong> -painiketta. Tämä pikakomento avaa haun; se ei käynnistä ääneenlukua automaattisesti.</p>
     <h2 className="settings-heading">Luo pikakomento kerran iPhonessa</h2>
     <ol className="shortcut-steps">
       <li>Avaa <strong>Pikakomennot</strong>, luo uusi pikakomento ja nimeä se <strong>Selitä sana</strong>.</li>
-      <li>Lisää median <strong>Toista/Tauko (Play/Pause)</strong> -toiminto. Valitse toiminnoksi <strong>Tauko (Pause)</strong> ja kohteeksi oma iPhone.</li>
+      <li>Lisää median <strong>Toista/keskeytä (Play/Pause)</strong> -toiminto. Valitse toiminnoksi <strong>Keskeytä (Pause)</strong> ja kohteeksi oma iPhone.</li>
       <li>Lisää <strong>Sanele teksti (Dictate Text)</strong>. Valitse kieleksi suomi ja lopetukseksi puhetauko.</li>
       <li>Lisää <strong>URL-koodaus (URL Encode)</strong> ja anna sille syötteeksi saneltu teksti. Näin myös ääkköset ja välilyönnit toimivat haussa.</li>
       <li>Lisää <strong>Teksti (Text)</strong>. Liitä siihen alla oleva osoite ja lisää heti <strong>=</strong>-merkin jälkeen edellisen vaiheen <strong>URL-koodattu teksti</strong> muuttujana, ilman välilyöntiä.</li>

@@ -25,7 +25,7 @@ npm run test:e2e
 - `content/fi/words.json` sisältää julkaistut, buildissä validoitavat WordEntry-tietueet.
 - `content/fi/categories.json` sisältää kontrolloidun kategoriataksonomian.
 - `content/fi/manifest.json` versionoi sisältöskeeman ja sisältöjulkaisun.
-- `content/fi/concepts.json` sisältää 49 suomenkielistä käsitettä; `concept-categories.json` sisältää niiden aiheet.
+- `content/fi/concepts.json` sisältää 50 suomenkielistä käsitettä; `concept-categories.json` sisältää niiden aiheet.
 - `content/backlog/fi-candidates.csv` on erillinen toimituksellinen ehdokaslista eikä päädy sovellusbundleen.
 
 Julkaistulla sanalla on muuttumaton UUID. Slug pidetään vakaana julkaisun jälkeen, jotta suorat sanareitit ja laitteelle tallennettu käyttäjätila säilyvät.
@@ -147,3 +147,11 @@ Version 0.5 tarkistus: 122 yksikkötestiä, 44 mobiili-Chromium-testiä ja 8 mob
 Kuuntelu käynnistyy napautuksesta myös Toimintopainikkeen pikakomennon jälkeen. WebKit vaatii käyttäjän eleen puheen aloittamiseen ([WebKitin toteutus](https://github.com/WebKit/WebKit/blob/main/Source/WebCore/Modules/speech/SpeechSynthesis.cpp)). Käytössä ovat laitteen selaimelle tarjoamat puheäänet; tämä ei lisää erillistä maksullista puhepalvelua. Oikean iPhonen ääni, äänenvoimakkuus ja Bluetooth-kuulokkeet pitää edelleen tarkistaa laitteella.
 
 Version 0.5.1 tarkistus: 124 yksikkötestiä sekä 48 Chromium- ja 12 WebKit-selaintestiä läpäisty, samoin TypeScript, ESLint ja build. Puhetapahtumat testataan hallitulla selainadapterilla; nämä testit eivät varmista iPhonen puheääntä tai kuulokkeita. Mobiiliasettelu tarkistettu myös selaimessa.
+
+### Monimerkityksisten sanojen selitykset (0.5.2)
+
+Wikipedian täsmennyssivumerkintä ei enää piilota lähteen palauttamaa tekstiä eikä kuuntelupainiketta. Merkitykset esitetään riveittäin lähteen järjestyksessä, ja käyttöliittymä kertoo asiayhteyden ratkaisevan tulkinnan. Ääneenluku lukee saman katkelman kuin näytöllä. Puuttuvasta katkelmasta kerrotaan erikseen; sitä ei korvata keksityllä määritelmällä. Osio-ohjauksille ei edelleenkään esitetä koko artikkelin johdantoa.
+
+Demokraatti lisättiin paikalliseen aineistoon: kansanvallan kannattaja, puoluepoliittinen käyttö ja lehden nimi erotetaan toisistaan. Lähteet ja podcast-esimerkki ovat käsitesivulla. Sisältöversio on 2026.10.4. Pikakomento-ohje sanoo nyt selvästi, että haku avautuu heti mutta ääni alkaa Kuuntele selitys -napautuksesta. Käyttäjä vahvisti äänen toimivan painikkeesta iPhonellaan; automaattista toistoa ei luvata.
+
+Tarkistus: 124 yksikkötestiä ja 66 selaintestiä (51 Chromium, 15 WebKit), TypeScript, ESLint, sisältövalidointi ja build läpäisty. Uudet regressiot tarkistavat paikallisen demokraatti-selityksen, täsmennyssivun koko katkelman näyttämisen ja ääneenluvun sekä puuttuvan katkelman käsittelyn. Demokraatin alkuperäinen Wikipedia-rajapintavastaus tarkistettiin myös verkosta: merkitykset olivat jo vastauksessa, mutta aiempi käyttöliittymä piilotti ne.
